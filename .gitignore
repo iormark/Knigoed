@@ -1,0 +1,5 @@
+/target
+/nbactions.xml
+/nb-configuration.xml
+/src/main/resources/config.properties
+/src/main/resources/logback.xml
