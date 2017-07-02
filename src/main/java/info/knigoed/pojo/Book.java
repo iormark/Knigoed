@@ -1,7 +1,8 @@
 package info.knigoed.pojo;
 
-import java.util.Date;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
+import java.util.Date;
 
 public class Book {
 
@@ -18,7 +19,7 @@ public class Book {
 	public String image;
 	public String edit;
 	public Date lastModified;
-	public String text;
+	public String description;
 
 	// ==
 	public String ageValue;
@@ -135,12 +136,12 @@ public class Book {
 		this.lastModified = lastModified;
 	}
 
-	public String getText() {
-		return text;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

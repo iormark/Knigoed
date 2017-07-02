@@ -14,24 +14,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class InvoiceController {
 
-	@Autowired
-	private Invoice invoice;
-	
-	@RequestMapping(value = "/invoice", method = RequestMethod.POST)
-	public String create(
-			@ModelAttribute("Invoice") final InvoicePojo invoicePojo) {
+    @Autowired
+    private Invoice invoice;
 
-		invoice.createInvoice(invoicePojo.getTargetId(), invoicePojo.getAmount());
-		
-		return "redirect:/invoice/" + invoicePojo.getInvoiceId();
-	}
+    @RequestMapping(value = "/invoice", method = RequestMethod.POST)
+    public String create(
+            @ModelAttribute("Invoice") final InvoicePojo invoicePojo) {
 
-	@RequestMapping(value = "/invoice/{invoiceId:\\d+}", method = RequestMethod.GET)
-	public String shopInvoice(@PathVariable int invoiceId, Model model) throws IOException {
+        invoice.createInvoice(invoicePojo.getTargetId(), invoicePojo.getAmount());
 
-		model.addAttribute("page", "invoice");
-		return "bundles/index";
-	}
-	
+        return "redirect:/invoice/" + invoicePojo.getInvoiceId();
+    }
+
+    @RequestMapping(value = "/invoice/{invoiceId:\\d+}", method = RequestMethod.GET)
+    public String shopInvoice(@PathVariable int invoiceId, Model model) throws IOException {
+
+        model.addAttribute("page", "invoice");
+        return "bundles/index";
+    }
 
 }

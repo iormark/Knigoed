@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="3 seconds">
+    <property resource="config.properties"/>
+    <property name="LOGGER_HOME" value="/home/mark/sites/log/yourmood"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SMTP" class="ch.qos.logback.classic.net.SMTPAppender">
+        <SSL>true</SSL>
+        <smtpHost>${email.host}</smtpHost>
+        <smtpPort>${email.port}</smtpPort>
+        <username>${email.username}</username>
+        <password>${email.password}</password>
+        <to>iormark@ya.ru</to>
+        <from>error@knigoed.info</from>
+        <subject>%logger{20} - %m</subject>
+        <layout class="ch.qos.logback.classic.html.HTMLLayout">
+            <pattern>%date%level%logger{24}%msg</pattern>
+        </layout>
+    </appender>
+
+    <logger name="info.knigoed" level="debug" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!--
+    <logtitlename="org.springframework" level="info" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>-->
+
+    <root level="ERROR">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>

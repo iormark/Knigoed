@@ -12,15 +12,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ShopController {
 
-	@Autowired
-	private Invoice invoice;
+    @Autowired
+    private Invoice invoice;
 
-	@RequestMapping(value = "/shop/{shopId:\\d+}/paying", method = RequestMethod.GET)
-	public String shopPaying(@PathVariable int shopId, Model model) throws IOException {
-		model.addAttribute("page", "shop-paying");
-		return "bundles/index";
-	}
-	
-	
+    @RequestMapping(value = "/shop/{shopId:\\d+}/paying", method = RequestMethod.GET)
+    public String shopPaying(@PathVariable int shopId, Model model) throws IOException {
+        model.addAttribute("page", "shop-paying");
+        return "bundles/index";
+    }
 
 }

@@ -5,6 +5,8 @@ import java.util.regex.Pattern;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.util.WebUtils;
@@ -12,41 +14,42 @@ import org.springframework.web.util.WebUtils;
 @Service
 public class RequestContext extends HandlerInterceptorAdapter {
 
-	private String country = "RU";
+    private static final Logger LOG = LoggerFactory.getLogger(RequestContext.class);
 
-	private String detectCountry(HttpServletRequest request, HttpServletResponse response) {
-		Cookie cookie = WebUtils.getCookie(request, "country");
+    private String country = "RU";
 
-		String country = "RU";
-		Matcher matcher = Pattern.compile("^([a-z]{2})\\.").matcher(request.getHeader("Host"));
-		if (matcher.find()) {
-			country = matcher.group(1).toUpperCase();
-		} else if (/*!"last".equals(args.get("model"))
+    private String detectCountry(HttpServletRequest request, HttpServletResponse response) {
+        Cookie cookie = WebUtils.getCookie(request, "country");
+
+        String country = "RU";
+        Matcher matcher = Pattern.compile("^([a-z]{2})\\.").matcher(request.getHeader("Host"));
+        if (matcher.find()) {
+            country = matcher.group(1).toUpperCase();
+        } else if (/*!"last".equals(args.get("model"))
 				&& !"book".equals(args.get("model"))
 				&& !"home".equals(args.get("model"))
 				&& */null != cookie) {
-			country = cookie.getValue();
-		}
+            country = cookie.getValue();
+        }
 
-		Cookie cookie1 = new Cookie("country", country);
-		cookie1.setMaxAge(360 * 30);
-		response.addCookie(cookie1);
-		return country;
-	}
+        Cookie cookie1 = new Cookie("country", country);
+        cookie1.setMaxAge(360 * 30);
+        response.addCookie(cookie1);
+        return country;
+    }
 
-	public String getCountry() {
-		return country;
-	}
+    public String getCountry() {
+        return country;
+    }
 
-	@Override
-	public boolean preHandle(HttpServletRequest request,
-			HttpServletResponse response, Object handler) throws Exception {
+    @Override
+    public boolean preHandle(HttpServletRequest request,
+            HttpServletResponse response, Object handler) throws Exception {
 
-		country = detectCountry(request, response);
+        country = detectCountry(request, response);
+        LOG.info("Country {}", country);
 
-		System.out.println("request.getContextPath()");
-
-		return true;
-	}
+        return true;
+    }
 
 }

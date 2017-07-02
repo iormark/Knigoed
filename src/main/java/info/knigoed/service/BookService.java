@@ -2,37 +2,39 @@ package info.knigoed.service;
 
 import info.knigoed.config.RequestContext;
 import info.knigoed.dao.BookDao;
+import info.knigoed.exception.ResourceNotFoundException;
 import info.knigoed.pojo.Book;
-import info.knigoed.pojo.Price;
-import java.io.IOException;
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BookService {
 
-	private final RequestContext requestContext;
-	private final BookDao bookDao;
+    private static final Logger LOG = LoggerFactory.getLogger(PriceService.class);
 
-	@Autowired
-	public BookService(RequestContext requestContext, BookDao bookDao) {
-		this.requestContext = requestContext;
-		this.bookDao = bookDao;
-	}
+    private final RequestContext requestContext;
+    private final BookDao bookDao;
 
-	public Book getBook(int bookId) {
+    @Autowired
+    public BookService(RequestContext requestContext, BookDao bookDao) {
+        this.requestContext = requestContext;
+        this.bookDao = bookDao;
+    }
 
-		Book book = bookDao.readBook(bookId);
-		if (book.getAge() > -1) {
-			book.setAgeValue(book.getAge() + "+");
-		}
+    public Book getBook(int bookId) {
 
-		return book;
-	}
+        Book book = bookDao.readBook(bookId);
+        if(null == book) {
+            throw new ResourceNotFoundException();
+        }
+  
+        if (book.getAge() > -1) {
+            book.setAgeValue(book.getAge() + "+");
+        }
 
-	public List<Price> getPrices(int bookId) throws IOException {
-		return bookDao.readPrices(bookId, requestContext.getCountry(), "ASC", 30);
-	}
+        return book;
+    }
 
 }

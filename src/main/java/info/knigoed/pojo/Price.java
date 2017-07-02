@@ -1,20 +1,21 @@
 package info.knigoed.pojo;
 
-import java.util.HashMap;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
+import java.util.HashMap;
 
 public class Price {
 
 	private int shopId;
-	private String shopName;
+	private String name;
 	private String domain;
-	private String shopSettings;
-	private String country;
-	private int rsi;
+	private String setting;
+	private String countryCode;
+	private String priceId;
 	private int bookId;
 	private String url;
 	private double price;
-	private String currencyId;
+	private String currencyCode;
 	private String available;
 	private String downloadable;
 	private int year;
@@ -29,12 +30,12 @@ public class Price {
 		this.shopId = shopId;
 	}
 
-	public String getShopName() {
-		return shopName;
+	public String getName() {
+		return name;
 	}
 
-	public void setShopName(String shopName) {
-		this.shopName = shopName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getDomain() {
@@ -45,28 +46,28 @@ public class Price {
 		this.domain = domain;
 	}
 
-	public String getShopSettings() {
-		return shopSettings;
+	public String getSetting() {
+		return setting;
 	}
 
-	public void setShopSettings(String shopSettings) {
-		this.shopSettings = shopSettings;
+	public void setSetting(String setting) {
+		this.setting = setting;
 	}
 
-	public String getCountry() {
-		return country;
+	public String getCountryCode() {
+		return countryCode;
 	}
 
-	public void setCountry(String country) {
-		this.country = country;
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
 	}
 
-	public int getRsi() {
-		return rsi;
+	public String getPriceId() {
+		return priceId;
 	}
 
-	public void setRsi(int rsi) {
-		this.rsi = rsi;
+	public void setPriceId(String priceId) {
+		this.priceId = priceId;
 	}
 
 	public int getBookId() {
@@ -93,12 +94,12 @@ public class Price {
 		this.price = price;
 	}
 
-	public String getCurrencyId() {
-		return currencyId;
+	public String getCurrencyCode() {
+		return currencyCode;
 	}
 
-	public void setCurrencyId(String currencyId) {
-		this.currencyId = currencyId;
+	public void setCurrencyCode(String currencyCode) {
+		this.currencyCode = currencyCode;
 	}
 
 	public String getAvailable() {

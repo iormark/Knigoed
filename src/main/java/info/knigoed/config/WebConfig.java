@@ -1,11 +1,7 @@
 package info.knigoed.config;
 
-import info.knigoed.dao.Invoice;
-import info.knigoed.dao.InvoiceDao;
-import java.util.Properties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -15,8 +11,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
-@Configuration
+import java.util.Properties;
 
+@Configuration
 /*@ComponentScan(basePackages = {
  "info.knigoed.config",
  "info.knigoed.controller",
@@ -52,14 +49,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/sitemap.xml").addResourceLocations("/");
 	}
 
-	@Bean
-	public ViewResolver freemarkerViewResolver() {
-		FreeMarkerViewResolver resolver = new FreeMarkerViewResolver();
-		resolver.setCache(!Boolean.parseBoolean(developer));
-		resolver.setSuffix(".html");
-		resolver.setContentType("text/html; charset=UTF-8");
-		return resolver;
-	}
+    @Bean
+    public ViewResolver freemarkerViewResolver() {
+        FreeMarkerViewResolver resolver = new FreeMarkerViewResolver();
+        resolver.setCache(!Boolean.parseBoolean(developer));
+        resolver.setSuffix(".ftl");
+        resolver.setContentType("description/html; charset=UTF-8");
+        return resolver;
+    }
 
 	@Bean
 	public FreeMarkerConfigurer freemarkerConfig() {
@@ -72,7 +69,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 			settings.setProperty("template_exception_handler", "ignore");
 			//settings.setProperty("template_exception_handler", "html_debug");
 		} else {
-			freeMarkerConfigurer.setTemplateLoaderPath("/WEB-INF/views/html.builds");
+			freeMarkerConfigurer.setTemplateLoaderPath("/WEB-INF/views/html-builds");
 			settings.setProperty("template_exception_handler", "ignore");
 		}
 

@@ -4,7 +4,7 @@
 
     <groupId>info.knigoed</groupId>
     <artifactId>SpringKnigoed</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>4.1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>SpringKnigoed</name>
@@ -206,16 +206,28 @@
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.2.21.v20170120</version>
+                <version>9.4.6.v20170531</version>
                 <configuration>
-                    <scanIntervalSeconds>2</scanIntervalSeconds>
-                    <webApp>
-                        <contextPath>/</contextPath>
-                    </webApp>
+                    <reload>automatic</reload>
+                    <scanIntervalSeconds>1</scanIntervalSeconds>
                     <httpConnector>
                         <host>knigoed.dev</host>
                         <port>8080</port>
                     </httpConnector>
+                    <stopKey/>
+                    <stopPort/>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>4.2.0</version>
+                <configuration>
+                    <configFile>src/main/resources/config.properties</configFile>
+                    <!--<url>jdbc:mysql://localhost:3306/knigoed</url>
+                    <user>${jdbc.username}</user>
+                    <password>xxx</password>-->
                 </configuration>
             </plugin>
         </plugins>
