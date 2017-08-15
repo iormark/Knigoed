@@ -1,5 +1,8 @@
 .idea
 target
-src/main/resources/сonfig.properties
+src/main/resources/config.properties
+docker/jetty/webapps
 docker/mysql/knigoed.tar.gz
+docker/mysql/knigoed.sql
+docker/mysql/my.cnf
 SpringKnigoed.iml

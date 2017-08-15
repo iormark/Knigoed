@@ -21,7 +21,7 @@ public class BookController {
 
 
     @RequestMapping(value = "/book/{bookId:\\d+}", method = RequestMethod.GET)
-    public String main(@PathVariable int bookId, Model model) throws IOException {
+    public String book(@PathVariable int bookId, Model model) throws IOException {
 
         model.addAttribute("title", "TODO supply a title ");
 

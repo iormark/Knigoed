@@ -35,7 +35,7 @@ public class PriceService {
     }
 
     private List<Price> rewritePrices(List<Price> prices) throws IOException {
-        List<Price> list = new ArrayList();
+        List<Price> list = new ArrayList<>();
         for (Price price : prices) {
 
             price.setName(StringUtils.isEmpty(price.getName()) ? price.getDomain() : price.getName());

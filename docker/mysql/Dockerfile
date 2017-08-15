@@ -1,2 +1,6 @@
-FROM mysql:5.7
-ADD knigoed1.tar.gz /docker-entrypoint-initdb.d
+# https://hub.docker.com/_/mysql/
+FROM mysql:5.6
+RUN apt-get update && apt-get -y install nano
+
+ADD mysql.cnf /etc/mysql/conf.d/
+ADD knigoed.sql /docker-entrypoint-initdb.d

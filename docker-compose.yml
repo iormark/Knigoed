@@ -1,12 +1,35 @@
-version: '3'
-
+version: '3.3'
 services:
    mysql:
+     # mysql -h172.19.0.1 -P3306 -uroot -pqwerty
+     # mysql -h172.19.0.1 -P9306
      build: docker/mysql
      environment:
-       MYSQL_ROOT_PASSWORD: xxx
+       MYSQL_ROOT_PASSWORD: qwerty
        MYSQL_DATABASE: knigoed
        MYSQL_USER: knigoed
-       MYSQL_PASSWORD: xxx
+       MYSQL_PASSWORD: qwerty
      ports:
        - "3306:3306"
+     #volumes:
+     #  - ./docker/mysql/data:/var/lib/mysql
+
+   sphinx:
+     build: docker/sphinx
+     ports:
+       - "9306:9306"
+       - "9312:9312"
+     depends_on:
+       - mysql
+     command: mysql:3306 -s -t 30 -- /sbin/my_init
+
+   jetty:
+     build: docker/jetty
+     volumes:
+       - ./docker/jetty/webapps:/var/lib/jetty/webapps/ROOT
+     ports:
+       - "8080:8080"
+     depends_on:
+       - mysql
+       - sphinx
+     command: sphinx:9306 -s -t 30 -- java -jar /usr/local/jetty/start.jar

@@ -29,6 +29,7 @@ public class InvoiceDao implements Invoice {
 
     @Override
     public InvoicePojo readInvoice(int paymentId, int userId) {
+        System.out.println("InvoicePojo");
         String sql = "SELECT p.invoiceId, p.targetId, p.created, p.shopName, , s.title, s.shopId, s.domain FROM shop s, payment p "
                 + "WHERE p.targetId = s.shopId AND p.paymentId = :paymentId AND s.userId = :userId";
 

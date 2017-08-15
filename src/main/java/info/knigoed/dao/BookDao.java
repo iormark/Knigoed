@@ -27,8 +27,8 @@ public class BookDao {
         }
     }
 
-      public List<Price> readPrices(int bookId, String countryCode, String sortPrice, int limit) throws IOException {
-          
+    public List<Price> readPrices(int bookId, String countryCode, String sortPrice, int limit) throws IOException {
+
         String sql = "SELECT s.shopId, "
             + "s.name, s.domain, s.setting, s.countryCode, p.priceId, p.bookId, "
             + "p.url, p.price, p.currencyCode, p.available, p.downloadable, p.year "

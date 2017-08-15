@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class Shop {
 
     private int shopId;
-    private String shopName;
+    private String name;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     static public class Settings {

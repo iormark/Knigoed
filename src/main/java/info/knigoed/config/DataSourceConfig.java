@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.sql2o.Sql2o;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 @Configuration
 public class DataSourceConfig {
@@ -20,30 +23,34 @@ public class DataSourceConfig {
     @Value("${jdbc.password}")
     private String password;
 
+    @Value("${sphinx.url}")
+    private String sphinxUrl;
+
     @Bean
     public DataSource dataSource() {
         System.out.println("dataSource");
         HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        // 6.x.x
+        //dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
-        if (Boolean.parseBoolean(developer)) {
-            dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/knigoed");
-            dataSource.setUsername("knigoed");
-            dataSource.setPassword("xxx");
-            dataSource.setMaximumPoolSize(12);
-        } else {
-            dataSource.setJdbcUrl(url);
-            dataSource.setUsername(username);
-            dataSource.setPassword(password);
-            dataSource.setMaximumPoolSize(300);
-        }
+        dataSource.setJdbcUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        dataSource.setMaximumPoolSize(300);
+
         return dataSource;
     }
 
     @Bean
     public Sql2o sql2o() {
-        System.out.println("> Sql2o");
         return new Sql2o(dataSource());
     }
 
+    @Bean
+    public Connection sqlSphinx() throws SQLException, ClassNotFoundException {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection conn = DriverManager.getConnection(sphinxUrl, "", "");
+        return conn;
+    }
 }
