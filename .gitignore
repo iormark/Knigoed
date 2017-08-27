@@ -1,5 +1,6 @@
 .idea
 target
+/src/main/webapp/builds
 src/main/resources/config.properties
 docker/jetty/webapps
 docker/mysql/knigoed.tar.gz

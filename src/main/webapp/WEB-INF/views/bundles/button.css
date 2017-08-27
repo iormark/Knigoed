@@ -1,0 +1,71 @@
+.btn {
+    cursor: pointer;
+    user-select: none;
+}
+
+
+.btn_blue {
+    width: 80px;
+    min-width: 80px;
+    line-height: 27px;
+    height: 27px;
+    cursor: pointer;
+    border-radius: 2px;
+    background-color: #69a0ff;
+    display: inline-block;
+    overflow: visible;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    white-space: nowrap;
+    text-decoration: none;
+    touch-action: manipulation;
+    text-align: center;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+
+.btn_green {
+    font-weight: bold;
+    padding: 12px 28px;
+    color: #fff;
+    border: 1px solid transparent;
+    border-top: 1px solid #6fb302;
+    border-bottom: 1px solid #426608;
+    border-radius: 3px;
+    outline: 0 none;
+    background: #74b20e;
+    background: linear-gradient(to bottom, #74b20e 0, #5b8c0b 100%);
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#74b20e', endColorstr='#5b8c0b', GradientType=0);
+}
+
+.btn_green:hover {
+    text-decoration: none;
+    text-decoration: none !important;
+
+    color: #fff;
+    border: 0;
+    border: 1px solid transparent;
+    border-top: 1px solid #6fb302;
+    border-bottom: 1px solid #426608;
+    background: #7cbf0f;
+    background: linear-gradient(to bottom, #7cbf0f 0, #63990c 100%);
+
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7cbf0f', endColorstr='#63990c', GradientType=0);
+}
+
+.btn_green:active {
+    color: #fff;
+    border: 0;
+    border: 1px solid transparent;
+    border-top: 1px solid #6fb302;
+    border-bottom: 1px solid #426608;
+    background: #6ba60d;
+    background: linear-gradient(to bottom, #6ba60d 0, #53800a 100%);
+
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6ba60d', endColorstr='#53800a', GradientType=0);
+}

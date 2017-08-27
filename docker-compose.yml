@@ -27,8 +27,9 @@ services:
      build: docker/jetty
      volumes:
        - ./docker/jetty/webapps:/var/lib/jetty/webapps/ROOT
+       - ./docker/jetty/jetty-deploy.xml:/usr/local/jetty/etc/jetty-deploy.xml
      ports:
-       - "8080:8080"
+       - "80:8080"
      depends_on:
        - mysql
        - sphinx

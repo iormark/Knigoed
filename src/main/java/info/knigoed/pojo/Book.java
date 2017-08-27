@@ -3,6 +3,7 @@ package info.knigoed.pojo;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import java.util.Date;
+import java.util.TreeSet;
 
 public class Book {
 
@@ -24,6 +25,7 @@ public class Book {
 
     // ==
     public String ageValue;
+    public TreeSet<Price> prices;
 
     public int getBookId() {
         return bookId;
@@ -151,6 +153,14 @@ public class Book {
 
     public void setYears(String years) {
         this.years = years;
+    }
+
+    public TreeSet<Price> getPrices() {
+        return prices;
+    }
+
+    public void setPrices(TreeSet<Price> prices) {
+        this.prices = prices;
     }
 
     @Override

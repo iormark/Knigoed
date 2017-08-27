@@ -13,7 +13,7 @@
         <SSL>true</SSL>
         <smtpHost>${email.host}</smtpHost>
         <smtpPort>${email.port}</smtpPort>
-        <username>${email.username}</username>
+        <name>${email.name}</name>
         <password>${email.password}</password>
         <to>${email.to}</to>
         <from>error@knigoed.info</from>

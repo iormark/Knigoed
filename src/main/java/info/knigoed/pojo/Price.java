@@ -5,14 +5,15 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import java.util.HashMap;
 
 public class Price {
-
+    private String priceId;
+    // Shop
 	private int shopId;
 	private String name;
 	private String domain;
 	private String setting;
 	private String countryCode;
-	private String priceId;
-	private int bookId;
+	// Price
+    private int bookId;
 	private String url;
 	private double price;
 	private String currencyCode;

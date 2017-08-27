@@ -1,0 +1,37 @@
+.price {
+    display: table;
+    width: 100%;
+}
+
+.price__row {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.price__row:hover {
+    background: #f8f8f8;
+}
+
+.price__row:first-child {
+    border-top: 1px solid #eaeaea;
+}
+
+.price__cell {
+    display: inline-block;
+    width: 10%;
+    padding: 10px 0;
+}
+
+.price__cell_shop-name {
+    width: 20%;
+    min-width: 140px;
+}
+
+.price__cell_buy {
+    width: 120px;
+    text-align: right;
+    float: right;
+    padding: 6px 0;
+}

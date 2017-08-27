@@ -1,0 +1,47 @@
+.header {
+    margin: 20px 10px;
+}
+
+.header-logo {
+    float: left;
+    padding: 5px;
+}
+
+.header-logo__image {
+    padding: 8px;
+}
+
+.header-search {
+    display: block;
+    max-width: 824px;
+    margin: 0 auto;
+}
+
+.header-search__right {
+    float: right;
+    padding: 5px;
+}
+
+.header-search__left {
+    overflow: hidden;
+    padding: 5px;
+}
+
+.header-search__submit {
+    padding: 12px;
+}
+
+.header-search__key {
+    background: #fff;
+    width: 100%;
+    font-size: 16px;
+    border: 1px solid #d1d1d1;
+    border-bottom-color: #b2b2b2;
+    border-radius: 3px;
+    padding: 14px 14px;
+    box-sizing: border-box;
+}
+
+.header-panel {
+    float: right;
+}

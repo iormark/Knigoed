@@ -2,10 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>${title}</title>
-    <meta charset="UTF-8">
+<#include "/bundles/meta.ftl">
 </head>
 <body>
-<div class="page-wrap"><#include "/bundles/${bundle}/${bundle}.ftl"></div>
+<#include "/blocks/head/head.ftl">
+<#include "/bundles/${bundle}/${bundle}.ftl">
 </body>
 </html>

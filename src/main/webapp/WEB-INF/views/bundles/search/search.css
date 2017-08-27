@@ -1,0 +1,49 @@
+.srch {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+/* Statistics */
+.srch__stats {
+    margin-bottom: 40px;
+    color: #808080;
+    font-size: 14px;
+}
+.srch-message {
+    text-align: center;
+}
+.srch-message__title {
+    font-weight: bold;
+}
+
+/* Result */
+
+.srch__item {
+
+}
+.srch__split {
+    clear: both;
+    height: 40px;
+    /*margin: 20px 0;
+     border-bottom: 0px dashed #d1d1d1;*/
+}
+
+.srch__image {
+    float: left;
+    width: 88px;
+    max-width: 88px;
+    max-height: 150px;
+    margin-right: 15px;
+}
+
+.srch__info {
+    overflow: hidden;
+}
+.srch__title {
+    margin-top: 0;
+
+}
+
+.srch__prices {
+}

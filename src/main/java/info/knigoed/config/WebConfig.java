@@ -20,13 +20,14 @@ import java.util.Properties;
     "info.knigoed.config",
     "info.knigoed.controller",
     "info.knigoed.service",
+    "info.knigoed.manager",
     "info.knigoed.dao"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Value("${developer}")
     private String developer;
 
-    // ==
+    // == RequestContext ==
     @Bean
     public RequestContext requestContext() {
         return new RequestContext();
@@ -37,6 +38,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(requestContext());
     }
     // ==
+
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

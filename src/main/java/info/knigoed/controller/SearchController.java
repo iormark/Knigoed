@@ -15,30 +15,32 @@ import java.sql.SQLException;
 @Controller
 public class SearchController {
 
-	@Autowired
-	private SearchService searchService;
+    @Autowired
+    private SearchService searchService;
 
 
-	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public String search(
-	    @RequestParam("key") String key,
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String search(
+        @RequestParam("key") String key,
         @RequestParam(required = false) String keywords,
         @RequestParam(required = false) Integer shop,
         Model model)
         throws IOException, SQLException, ClassNotFoundException {
 
-		model.addAttribute("name", "Search" );
+        model.addAttribute("name", "Search");
 
         SearchSphinxParam param = new SearchSphinxParam(key, shop, 0, 0);
-        searchService.runSearch(param);
-		model.addAttribute("books", searchService.getBooks());
-		//System.out.println(bookService.getPrices(bookId));
+        if (param.isAllowed())
+            searchService.runSearch(param);
 
-		//model.addAttribute("prices", bookService.getPrices(bookId));
+        model.addAttribute("key", param.getKey());
+        model.addAttribute("result", searchService.getBooks());
+        //System.out.println(bookService.getPrices(bookId));
 
-		System.out.println();
+        //model.addAttribute("prices", bookService.getPrices(bookId));
+
         model.addAttribute("bundle", "search");
-		return "bundles/index";
-	}
+        return "bundles/template-1";
+    }
 
 }

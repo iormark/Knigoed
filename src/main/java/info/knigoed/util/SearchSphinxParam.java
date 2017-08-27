@@ -1,5 +1,6 @@
 package info.knigoed.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +29,10 @@ public class SearchSphinxParam {
                 replace("--", " ").trim();
         }
         return key;
+    }
+
+    public boolean isAllowed() {
+        return !StringUtils.isEmpty(key);
     }
 
     public String getKey() {

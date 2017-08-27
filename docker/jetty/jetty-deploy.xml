@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+
+    <Call name="addBean">
+        <Arg>
+            <New id="DeploymentManager" class="org.eclipse.jetty.deploy.DeploymentManager">
+                <Set name="contexts">
+                    <Ref refid="Contexts" />
+                </Set>
+                <Call id="webappprovider" name="addAppProvider">
+                    <Arg>
+                        <New class="org.eclipse.jetty.deploy.providers.WebAppProvider">
+                            <Set name="monitoredDirName"><Property name="jetty.base" default="." />/webapps</Set>
+                            <Set name="defaultsDescriptor"><Property name="jetty.home" default="." />/etc/webdefault.xml</Set>
+                            <Set name="scanInterval">1</Set>
+                            <Set name="extractWars">false</Set>
+                        </New>
+                    </Arg>
+                </Call>
+            </New>
+        </Arg>
+    </Call>
+</Configure>
