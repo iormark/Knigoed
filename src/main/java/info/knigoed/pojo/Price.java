@@ -19,8 +19,9 @@ public class Price {
 	private String currencyCode;
 	private String available;
 	private String downloadable;
-	private int year;
+	private Integer year;
 	//
+    private String priceFormat;
 	private HashMap currencies;
 
 	public int getShopId() {
@@ -119,18 +120,26 @@ public class Price {
 		this.downloadable = downloadable;
 	}
 
-	public int getYear() {
+	public Integer getYear() {
 		return year;
 	}
 
-	public void setYear(int year) {
+	public void setYear(Integer year) {
 		this.year = year;
 	}
 
 	// ==
-	
 
-	public HashMap getCurrencies() {
+
+    public String getPriceFormat() {
+        return priceFormat;
+    }
+
+    public void setPriceFormat(String priceFormat) {
+        this.priceFormat = priceFormat;
+    }
+
+    public HashMap getCurrencies() {
 		return currencies;
 	}
 

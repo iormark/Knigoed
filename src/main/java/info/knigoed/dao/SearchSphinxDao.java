@@ -6,38 +6,44 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.CallableStatementCallback;
+import org.springframework.jdbc.core.CallableStatementCreator;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.RequestScope;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Search on the basis of the Sphinx engine via SphinxQL.
  *
  * @author mark
  */
+@RequestScope
 @Service
 public class SearchSphinxDao {
 
     private final static Logger LOG = LoggerFactory.getLogger(SearchSphinxDao.class);
 
     @Autowired
-    private Connection sqlSphinx;
+    private JdbcTemplate sphinxJdbc;
 
     private StringBuilder booksId;
-    private final Map<Integer, String> years = new HashMap<Integer, String>();
-    private LinkedHashMap<Long, Long> shopsId = new LinkedHashMap<>();
+    private final Map<Integer, String> years = new HashMap<>();
+    private LinkedHashMap<Integer, Integer> shopsId = new LinkedHashMap<>();
     private final StringBuilder filters = new StringBuilder();
-    private int quorum = 3;
+    private int quorum = 2;
     private int rating = 30;
     private int total = 0, totalFound = 0;
     private float time = 0;
     private final UrlGenerator urlGenerator = new UrlGenerator();
-
-
-    public SearchSphinxDao() {
-
-    }
 
     public UrlGenerator getUrlGenerator() {
         return urlGenerator;
@@ -124,19 +130,12 @@ public class SearchSphinxDao {
         String weightFormula = null;//", WEIGHT() AS weight";
         String match = " MATCH('\"" + key + "\"|(" + key + ")|\"" + key + "\"/" + quorum + "')";
         String option = " OPTION field_weights=(title=10, author=8, publisher=7);";
+        LOG.debug("SELECT MAX(LENGTH(shop)) FROM Book WHERE" + match + filters + " LIMIT 1" + option);
 
-        Statement createStatement = sqlSphinx.createStatement();
-        try (ResultSet resultSet = createStatement.executeQuery(
-            "SELECT MAX(LENGTH(shop)) FROM Book WHERE" + match + filters + " LIMIT 1" + option)) {
-            while (resultSet.next()) {
-                maxWeight = resultSet.getFloat(1);
-            }
-            if (maxWeight > 0 && rating > 0) {
-                weightFormula = ", ((WEIGHT()/" + maxWeight + "*(100-" + rating + ")) + (LENGTH(shop)/10)*" + rating + ") AS weight";
-            }
-            resultSet.close();
+        maxWeight = sphinxJdbc.queryForObject("SELECT MAX(LENGTH(shop)) FROM Book WHERE" + match + filters + " LIMIT 1" + option, Integer.class);
+        if (maxWeight > 0 && rating > 0) {
+            weightFormula = ", ((WEIGHT()/" + maxWeight + "*(100-" + rating + ")) + (LENGTH(shop)/10)*" + rating + ") AS weight";
         }
-
         if (weightFormula == null)
             return false;
 
@@ -145,33 +144,42 @@ public class SearchSphinxDao {
 
         sql += "SHOW META;";
         sql += "SELECT @groupby AS shop, COUNT(*) AS count, country FROM Book WHERE " + match + " GROUP BY shop ORDER BY count DESC LIMIT 20";
+        LOG.info(sql);
         sphinxQuery(sql);
         return true;
     }
 
+
     private void sphinxQuery(String sql) throws SQLException {
-        try (CallableStatement callableStatement = sqlSphinx.prepareCall(sql)) {
-            boolean isResultSet = callableStatement.execute();
-            ResultSet resultSet = callableStatement.getResultSet();
-
-            if (isResultSet) {
-                sphinxBooks(resultSet);
+        sphinxJdbc.execute(new CallableStatementCreator() {
+            @Override
+            public CallableStatement createCallableStatement(Connection con) throws SQLException {
+                return con.prepareCall(sql);
             }
+        }, new CallableStatementCallback<Set<ResultSet>>() {
+            @Override
+            public Set<ResultSet> doInCallableStatement(CallableStatement callableStatement) throws SQLException {
+                boolean isResultSet = callableStatement.execute();
+                ResultSet resultSet = callableStatement.getResultSet();
 
-            isResultSet = callableStatement.getMoreResults();
-            if (isResultSet) {
-                resultMeta(callableStatement.getResultSet());
-            }
+                if (isResultSet) {
+                    sphinxBooks(resultSet);
+                }
 
-            isResultSet = callableStatement.getMoreResults();
-            if (isResultSet) {
-                sphinxShops(callableStatement.getResultSet());
+                isResultSet = callableStatement.getMoreResults();
+                if (isResultSet) {
+                    resultMeta(callableStatement.getResultSet());
+                }
+
+                isResultSet = callableStatement.getMoreResults();
+                if (isResultSet) {
+                    sphinxShops(callableStatement.getResultSet());
+                }
+                resultSet.close();
+                callableStatement.close();
+                return null;
             }
-            callableStatement.close();
-        } finally {
-            //sphinxClose();
-            LOG.debug("Sphinx Close Connect");
-        }
+        });
     }
 
 
@@ -180,7 +188,7 @@ public class SearchSphinxDao {
         String separator = "";
 
         while (resultSet.next()) {
-            years.put(resultSet.getInt("id"), normalizeYears(resultSet.getString("year")));
+            //years.put(resultSet.getInt("id"), normalizeYears(resultSet.getString("year")));
             docsId.append(separator);
             separator = ",";
             docsId.append(resultSet.getInt("id"));
@@ -211,7 +219,7 @@ public class SearchSphinxDao {
     private void sphinxShops(ResultSet resultSet) throws SQLException {
         while (resultSet.next()) {
             LOG.debug("shop: " + resultSet.getObject(1) + ", count books: " + resultSet.getObject(2));
-            shopsId.put(resultSet.getLong(1), resultSet.getLong(2));
+            shopsId.put(resultSet.getInt(1), resultSet.getInt(2));
         }
         resultSet.close();
     }
@@ -223,14 +231,6 @@ public class SearchSphinxDao {
         return null;
     }
 
-    private void sphinxClose() {
-        try {
-            if (sqlSphinx != null)
-                sqlSphinx.close();
-        } catch (SQLException ex) {
-            LOG.error("", ex);
-        }
-    }
 
     public StringBuilder getBooksId() {
         return booksId;
@@ -240,7 +240,7 @@ public class SearchSphinxDao {
         return years;
     }
 
-    public LinkedHashMap<Long, Long> getShopsId() {
+    public LinkedHashMap<Integer, Integer> getShopsId() {
         return shopsId;
     }
 

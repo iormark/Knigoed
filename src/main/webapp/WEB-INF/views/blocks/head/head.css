@@ -1,45 +1,101 @@
 .header {
-    margin: 20px 10px;
+    margin: 20px 10px 0 10px;
 }
 
+/* Logo */
 .header-logo {
     float: left;
-    padding: 5px;
+    padding: 7px;
 }
 
-.header-logo__image {
-    padding: 8px;
+/* Country */
+.header__country {
+    float: left;
+    padding: 7px 12px;
 }
 
+.header__select {
+    cursor: pointer;
+    font-size: 16px;
+
+    width: 150px;
+    height: 34px;
+    padding: 5px 35px 5px 5px;
+
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #eee;
+    background-repeat: no-repeat;
+    background-position: 94% 50%;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.header__select.RU {
+    background-image: url(/images/flags-ru.png);
+}
+
+.header__select.BY {
+    background-image: url(/images/flags-by.png);
+}
+
+.header__select.UA {
+    background-image: url(/images/flags-ua.png);
+}
+
+.header__select.KZ {
+    background-image: url(/images/flags-kz.png);
+}
+
+/* Search */
 .header-search {
     display: block;
-    max-width: 824px;
+    max-width: 1010px;
     margin: 0 auto;
 }
 
 .header-search__right {
     float: right;
-    padding: 5px;
 }
 
 .header-search__left {
     overflow: hidden;
-    padding: 5px;
 }
 
 .header-search__submit {
-    padding: 12px;
+    height: 48px;
+    cursor: pointer;
+    min-width: 76px;
+    max-width: 86px;
+    padding: 0;
+    text-align: center;
 }
 
 .header-search__key {
     background: #fff;
     width: 100%;
     font-size: 16px;
-    border: 1px solid #d1d1d1;
+    border: 1px solid #ccc;
+    border-right: 0;
     border-bottom-color: #b2b2b2;
-    border-radius: 3px;
+    border-radius: 3px 0 0 3px;
     padding: 14px 14px;
     box-sizing: border-box;
+    outline: 0 none;
+}
+.header-search__year {
+    background: #fff;
+    width: 70px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-left: 0;
+    border-right: 0;
+    border-bottom-color: #b2b2b2;
+    padding: 14px 14px;
+    box-sizing: border-box;
+    outline: 0 none;
 }
 
 .header-panel {

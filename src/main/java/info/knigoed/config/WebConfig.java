@@ -64,7 +64,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public FreeMarkerConfigurer freemarkerConfig() {
         Properties settings = new Properties();
-        settings.setProperty("number_format", "0.##");
+        settings.setProperty("number_format", "0.###");
 
         FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
         if (Boolean.parseBoolean(developer)) {

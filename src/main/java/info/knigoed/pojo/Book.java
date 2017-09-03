@@ -8,15 +8,15 @@ import java.util.TreeSet;
 public class Book {
 
     public int bookId;
-    public String title;
     public String author;
+    public String title;
     public String publisher;
     public String series;
-    public String pageExtent;
-    public String binding;
     public String isbn;
     public String isbnReadable;
-    public int age;
+    public String pageExtent;
+    public String binding;
+    public Integer age;
     public String image;
     public String edit;
     public Date lastModified;
@@ -99,11 +99,11 @@ public class Book {
         this.isbnReadable = isbnReadable;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 

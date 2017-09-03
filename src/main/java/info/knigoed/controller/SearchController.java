@@ -21,6 +21,50 @@ public class SearchController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String search(
+        @RequestParam String key,
+        @RequestParam(required = false) String keywords,
+        @RequestParam(required = false) Integer shop,
+        @RequestParam(required = false) Integer year,
+        Model model) throws IOException, SQLException, ClassNotFoundException {
+
+        searchModel(key, keywords, shop, year, model);
+
+        model.addAttribute("bundle", "search");
+        return "bundles/template-1";
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public String searchAjax(
+        @RequestParam String key,
+        @RequestParam(required = false) String keywords,
+        @RequestParam(required = false) Integer shop,
+        @RequestParam(required = false) Integer year,
+        Model model) throws IOException, SQLException, ClassNotFoundException {
+
+        searchModel(key, keywords, shop, year, model);
+
+        return "bundles/search/search";
+    }
+
+    private Model searchModel(String key, String keywords, Integer shop, Integer year, Model model) throws IOException, SQLException {
+        long startTime = System.currentTimeMillis();
+
+        // Search
+        SearchSphinxParam param = new SearchSphinxParam(key, keywords, shop, year);
+        model.addAttribute("key", param.getKey());
+        searchService.runSearch(param);
+        model.addAttribute("results", searchService.getBooks());
+        model.addAttribute("shops", searchService.getShops());
+
+        // Logs
+        model.addAttribute("total", searchService.getTotal());
+        float time = (float) (System.currentTimeMillis() - startTime) / 1000;
+        model.addAttribute("time", time);
+        return model;
+    }
+
+    /*@RequestMapping(value = "/search-test", method = RequestMethod.GET)
+    public String searchTest(
         @RequestParam("key") String key,
         @RequestParam(required = false) String keywords,
         @RequestParam(required = false) Integer shop,
@@ -29,18 +73,19 @@ public class SearchController {
 
         model.addAttribute("name", "Search");
 
-        SearchSphinxParam param = new SearchSphinxParam(key, shop, 0, 0);
-        if (param.isAllowed())
-            searchService.runSearch(param);
-
-        model.addAttribute("key", param.getKey());
-        model.addAttribute("result", searchService.getBooks());
-        //System.out.println(bookService.getPrices(bookId));
-
-        //model.addAttribute("prices", bookService.getPrices(bookId));
+        List<Integer> results = jdbcTemplate.query(
+            "SELECT id FROM Book LIMIT 10",
+            new RowMapper<Integer>() {
+                @Override
+                public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    return new Integer(rs.getInt("id"));
+                }
+            });
+        System.out.println("jdbcTemplate: "+ results);
 
         model.addAttribute("bundle", "search");
         return "bundles/template-1";
-    }
+    }*/
+
 
 }

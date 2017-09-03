@@ -1,5 +1,5 @@
 .srch {
-    max-width: 1000px;
+    max-width: 1010px;
     margin: 0 auto;
     padding: 0 10px;
 }
@@ -40,9 +40,11 @@
 .srch__info {
     overflow: hidden;
 }
-.srch__title {
+.srch-title {
     margin-top: 0;
-
+}
+.srch-title__author {
+    font-size: 17px;
 }
 
 .srch__prices {

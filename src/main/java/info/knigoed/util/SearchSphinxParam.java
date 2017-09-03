@@ -13,11 +13,20 @@ public class SearchSphinxParam {
         search.setQuorum(quorum);
 		search.setRating(rating);*/
 
-    public SearchSphinxParam(String key, Integer countryId, Integer shopId, Integer year) {
-        LOG.info("{}, shopId:{}", key, shopId);
+    /**
+     * @param key      - query
+     * @param keywords - old query params
+     * @param shop     - shop
+     * @param year     - year
+     */
+    public SearchSphinxParam(String key, String keywords, Integer shop, Integer year) {
+        if (StringUtils.isEmpty(key) && !StringUtils.isEmpty(keywords))
+            key = keywords;
+
+        LOG.info("{}, shopId:{}", key, shop);
         this.key = queryClear(key);
-        if (shopId != null)
-            this.shopId = shopId;
+        if (shop != null)
+            shopId = shop;
     }
 
     private String queryClear(String key) {
@@ -31,7 +40,7 @@ public class SearchSphinxParam {
         return key;
     }
 
-    public boolean isAllowed() {
+    public boolean isValid() {
         return !StringUtils.isEmpty(key);
     }
 

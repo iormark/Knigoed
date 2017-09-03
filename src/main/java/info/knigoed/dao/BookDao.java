@@ -3,9 +3,10 @@ package info.knigoed.dao;
 import info.knigoed.pojo.Book;
 import info.knigoed.pojo.Price;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.sql2o.Connection;
-import org.sql2o.Sql2o;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,17 +15,15 @@ import java.util.List;
 public class BookDao {
 
     @Autowired
-    private Sql2o sql2o;
+    @Qualifier("mysqlJdbc")
+    private JdbcTemplate mysqlJdbc;
 
     public Book readBook(int bookId) {
         String sql = "SELECT b.bookId, b.title, b.author, b.publisher, b.series, b.pageExtent, b.binding, "
             + "b.isbn, b.age, b.image, b.edit, b.lastModified, bi.description "
-            + "FROM Book b, BookInfo bi WHERE b.bookId = bi.bookId AND b.bookId = :bookId  AND b.edit != 'delete'";
+            + "FROM Book b, BookInfo bi WHERE b.bookId = bi.bookId AND b.bookId = ?  AND b.edit != 'delete'";
 
-        try (Connection con = sql2o.open()) {
-            return con.createQuery(sql).addParameter("bookId", bookId)
-                .executeAndFetchFirst(Book.class);
-        }
+        return (Book) mysqlJdbc.queryForObject(sql, new Object[]{bookId}, new BeanPropertyRowMapper(Book.class));
     }
 
     public List<Price> readPrices(int bookId, String countryCode, String sortPrice, int limit) throws IOException {
@@ -35,15 +34,11 @@ public class BookDao {
             + "FROM BookPrice p, Shop s "
             + "LEFT JOIN ShopTarget target ON s.shopId=target.shopId "
             + "WHERE s.status IN('pause', 'process') "
-            + "AND (target.countryCode = :countryCode OR target.countryCode IS NULL) "
+            + "AND (target.countryCode = ? OR target.countryCode IS NULL) "
             + "AND p.shopId = s.shopId "
-            + "AND p.bookId = :bookId LIMIT :limit";
+            + "AND p.bookId = ? LIMIT ?";
 
-        try (Connection con = sql2o.open()) {
-            List<Price> prices = con.createQuery(sql).addParameter("countryCode", countryCode)
-                .addParameter("bookId", bookId).addParameter("limit", limit).executeAndFetch(Price.class);
-            return prices;
-        }
+        return mysqlJdbc.query(sql, new Object[]{countryCode, bookId, limit}, new BeanPropertyRowMapper(Price.class));
     }
 
 

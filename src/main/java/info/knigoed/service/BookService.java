@@ -30,7 +30,7 @@ public class BookService {
             throw new ResourceNotFoundException();
         }
   
-        if (book.getAge() > -1) {
+        if (book.getAge() != null && book.getAge() > -1) {
             book.setAgeValue(book.getAge() + "+");
         }
 

@@ -4,6 +4,8 @@ public class Country {
     private int countryId;
     private String countryName;
     private String countryCode;
+    private String currencyCode;
+    private String currencySuffix;
 
     public int getCountryId() {
         return countryId;
@@ -29,4 +31,19 @@ public class Country {
         this.countryCode = countryCode;
     }
 
+    public String getCurrencyCode() {
+        return currencyCode;
+    }
+
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
+    }
+
+    public String getCurrencySuffix() {
+        return currencySuffix;
+    }
+
+    public void setCurrencySuffix(String currencySuffix) {
+        this.currencySuffix = currencySuffix;
+    }
 }

@@ -1,11 +1,10 @@
 <div class="srch">
 
-    <div class="srch__stats">Найденно книг 1 600 (0,42 сек.)</div>
+    <div class="srch__stats">Найденно книг ${total} (${time?string["0.##"]} сек.)</div>
 
     <section class="srch-result">
 
-    <#list result as res>
-
+    <#list results as res>
         <div class="srch__item" data-id="${res.bookId}">
 
             <a class="srch__image" href="/book/${res.bookId}" target="_blank">
@@ -17,15 +16,14 @@
             </a>
 
             <div class="srch__info">
-                <h3 class="srch__title">
-                    <a class="title" href="/book/${res.bookId}" target="_blank">${(res.title)!""}</a><br>
-                    <span>${(res.author)!""} <#if (res.publisher)??>(${res.publisher})</#if></span>
+                <h3 class="srch-title">
+                    <a class="srch-title__name" href="/book/${res.bookId}" target="_blank">${(res.title)!""}</a><br>
+                    <span class="srch-title__author">${(res.author)!""} <#if (res.publisher)??>(${res.publisher})</#if></span>
                 </h3>
 
                 <div class="srch__desc">
                     <#if (res.series)??>Серия: ${res.series}<br></#if>
-                    <#if (res.years)??>Год: ${res.years}<br></#if>
-                    <#if (res.code)??>ISBN: ${res.code}<br></#if>
+                    <#if (res.isbn)??>ISBN: ${res.isbn}<br></#if>
                     <p><#if (res.description)??>${res.description}</#if></p>
                 </div>
             </div>

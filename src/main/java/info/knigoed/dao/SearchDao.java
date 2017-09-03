@@ -4,9 +4,10 @@ import info.knigoed.pojo.Book;
 import info.knigoed.pojo.Price;
 import info.knigoed.pojo.Shop;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.sql2o.Connection;
-import org.sql2o.Sql2o;
 
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
@@ -16,34 +17,31 @@ import java.util.List;
 public class SearchDao {
 
     @Autowired
-    private Sql2o sql2o;
+    @Qualifier("mysqlJdbc")
+    private JdbcTemplate mysqlJdbc;
 
     public List<Book> getBooks(StringBuilder booksId) throws SQLException {
 
-        String sql = "SELECT b.bookId, b.title, b.image, b.author, b.publisher, b.series, f.description " +
+        String sql = "SELECT b.bookId, b.author, b.title, b.publisher, b.series, b.isbn, b.image,  f.description " +
             "FROM Book b, BookInfo f WHERE b.bookId = f.bookId "
             + "AND b.bookId IN(" + booksId + ") "
             + "ORDER BY FIELD(b.bookId, " + booksId + ");";
 
-        try (Connection con = sql2o.open()) {
-            return con.createQuery(sql).executeAndFetch(Book.class);
-        }
+        return mysqlJdbc.query(sql, new BeanPropertyRowMapper(Book.class));
     }
 
     public List<Price> getPrices(StringBuilder booksId) throws SQLException {
 
         String sql = "SELECT " +
-            "p.priceId, p.bookId, p.price, p.url, p.currencyCode, p.available, p.downloadable, " +
+            "p.priceId, p.bookId, p.price, p.url, p.currencyCode, p.year, p.available, p.downloadable, " +
             "s.name, s.domain, s.setting FROM BookPrice p, Shop s " +
             "WHERE p.shopId = s.shopId AND p.bookId IN(" + booksId + ")";
 
-        try (Connection con = sql2o.open()) {
-            return con.createQuery(sql).executeAndFetch(Price.class);
-        }
+        return mysqlJdbc.query(sql, new BeanPropertyRowMapper(Price.class));
     }
 
 
-    public List<Shop> getShops(LinkedHashMap<Long, Long> shopsId, String countryCode)
+    public List<Shop> getShops(LinkedHashMap<Integer, Integer> shopsId, String countryCode)
         throws SQLException {
 
         StringBuilder docsId = new StringBuilder();
@@ -53,12 +51,10 @@ public class SearchDao {
 
         String sql = "SELECT s.shopId, s.name " +
             "FROM Shop s LEFT JOIN ShopTarget ON s.shopId = ShopTarget.shopId " +
-            "WHERE (ShopTarget.countryCode = :countryCode OR ShopTarget.countryCode IS NULL) " +
+            "WHERE (ShopTarget.countryCode = ? OR ShopTarget.countryCode IS NULL) " +
             "AND status IN('pause','process') AND s.shopId IN(" + docsId + ") " +
             "ORDER BY FIELD(s.shopId, " + docsId + ")";
 
-        try (Connection con = sql2o.open()) {
-            return con.createQuery(sql).addParameter("countryCode", countryCode).executeAndFetch(Shop.class);
-        }
+        return mysqlJdbc.query(sql, new Object[] { countryCode }, new BeanPropertyRowMapper(Price.class));
     }
 }

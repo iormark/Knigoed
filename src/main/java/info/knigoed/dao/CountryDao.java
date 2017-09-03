@@ -1,10 +1,11 @@
-package info.knigoed.config;
+package info.knigoed.dao;
 
 import info.knigoed.pojo.Country;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.sql2o.Connection;
-import org.sql2o.Sql2o;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
@@ -12,19 +13,18 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class CountryConfig {
+public class CountryDao {
 
     @Autowired
-    private Sql2o sql2o;
+    @Qualifier("mysqlJdbc")
+    private JdbcTemplate mysqlJdbc;
 
     private Map<String, Country> countries = new HashMap<>();
 
     @PostConstruct
     private void initCountries() {
-        String sql = "SELECT countryId, countryName, countryCode FROM Country LIMIT 10";
-        try (Connection con = sql2o.open()) {
-            rewriteCountries(con.createQuery(sql).executeAndFetch(Country.class));
-        }
+        String sql = "SELECT * FROM Country LIMIT 10";
+        rewriteCountries(mysqlJdbc.query(sql, new BeanPropertyRowMapper(Country.class)));
     }
 
     private void rewriteCountries(List<Country> countriesList) {
