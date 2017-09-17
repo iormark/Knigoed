@@ -70,7 +70,7 @@ public class PriceCurrency {
         shopCountryCode = shopCountryCode != null ? shopCountryCode : "RU";
         priceCurrencyCode = !priceCurrencyCode.equals("") ? priceCurrencyCode : "RUR";
         String rateCode = getRate(priceCurrencyCode, shopCountryCode, shopCurrencies);
-        LOG.info("rateCode {}", rateCode);
+        //LOG.info("rateCode {}", rateCode);
         double curr = currencyConversion(price, priceCurrencyCode, rateCode);
         return curr;
     }
@@ -112,7 +112,7 @@ public class PriceCurrency {
      * @param rateCode валюта, по которой будет конвертация
      * @return сконвертированная цена за товарное предложение
      */
-    private double currencyConversion(double price, String priceCurrencyCode, String rateCode) {
+    public double currencyConversion(double price, String priceCurrencyCode, String rateCode) {
         if (userCurrencyCode.equals(rateCode) && rateCode.equals(priceCurrencyCode)) {
             return price;
         } else if (!userCurrencyCode.equals(rateCode) && !priceCurrencyCode.equals(rateCode)) {
@@ -127,9 +127,6 @@ public class PriceCurrency {
             // по которому переводим, такой запрос будет NULL
             price = price * Double.parseDouble(currencies.get(rateCode).get(priceCurrencyCode).toString());
         } else {
-            // TODO
-            LOG.info("currencies {}", currencies.get(rateCode));
-            LOG.info("userCurrencyCode {}", userCurrencyCode);
             price = price / Double.parseDouble(currencies.get(rateCode).get(userCurrencyCode).toString());
         }
 

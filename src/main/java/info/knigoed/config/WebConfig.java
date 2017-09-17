@@ -1,9 +1,13 @@
 package info.knigoed.config;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -12,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
+import java.util.List;
 import java.util.Properties;
 
 @Configuration
@@ -83,6 +88,23 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public freemarker.template.Configuration freemarkerTemplate() {
         return freemarkerConfig().getConfiguration();
+    }
+
+    /*@Bean
+    public Jackson2ObjectMapperBuilder objectMapperBuilder() {
+        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
+        builder.serializationInclusion(JsonInclude.Include.NON_NULL);
+        return builder;
+    }*/
+
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        for (HttpMessageConverter converter : converters) {
+            if (converter instanceof MappingJackson2HttpMessageConverter) {
+                ObjectMapper mapper = ((MappingJackson2HttpMessageConverter) converter).getObjectMapper();
+                mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            }
+        }
     }
 
 }

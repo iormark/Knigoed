@@ -16,10 +16,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Search on the basis of the Sphinx engine via SphinxQL.
@@ -35,7 +32,7 @@ public class SearchSphinxDao {
     @Autowired
     private JdbcTemplate sphinxJdbc;
 
-    private StringBuilder booksId;
+    private List<Integer> booksId = new ArrayList<>();
     private final Map<Integer, String> years = new HashMap<>();
     private LinkedHashMap<Integer, Integer> shopsId = new LinkedHashMap<>();
     private final StringBuilder filters = new StringBuilder();
@@ -78,6 +75,21 @@ public class SearchSphinxDao {
         if (country > 0) {
             LOG.debug("filterCountry: " + country);
             filters.append(" and country IN(0,").append(country).append(")");
+        }
+    }
+
+    /**
+     * @param type Фильтрация по полю "type"
+     */
+    public void filterType(String type) {
+        if (!type.equals("all")) {
+            LOG.debug("filterType: " + type);
+            if (type.equals("book"))
+                filters.append(" and type=1");
+            if (type.equals("ebook"))
+                filters.append(" and type=2");
+            if (type.equals("audiobook"))
+                filters.append(" and type=3");
         }
     }
 
@@ -184,22 +196,14 @@ public class SearchSphinxDao {
 
 
     private void sphinxBooks(ResultSet resultSet) throws SQLException {
-        StringBuilder docsId = new StringBuilder();
-        String separator = "";
-
         while (resultSet.next()) {
             //years.put(resultSet.getInt("id"), normalizeYears(resultSet.getString("year")));
-            docsId.append(separator);
-            separator = ",";
-            docsId.append(resultSet.getInt("id"));
+            booksId.add(resultSet.getInt("id"));
         }
         resultSet.close();
-
-        if (docsId.length() > 0) {
-            LOG.debug("BooksId: " + docsId);
-            booksId = docsId;
-        }
+        LOG.debug("BooksId: " + booksId);
     }
+
 
     private void resultMeta(ResultSet resultSet) throws SQLException {
         while (resultSet.next()) {
@@ -232,7 +236,7 @@ public class SearchSphinxDao {
     }
 
 
-    public StringBuilder getBooksId() {
+    public List getBooksId() {
         return booksId;
     }
 

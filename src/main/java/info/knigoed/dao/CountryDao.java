@@ -8,7 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,11 +19,11 @@ public class CountryDao {
     @Qualifier("mysqlJdbc")
     private JdbcTemplate mysqlJdbc;
 
-    private Map<String, Country> countries = new HashMap<>();
+    private Map<String, Country> countries = new LinkedHashMap<>();
 
     @PostConstruct
     private void initCountries() {
-        String sql = "SELECT * FROM Country LIMIT 10";
+        String sql = "SELECT * FROM Country ORDER BY countryId LIMIT 10";
         rewriteCountries(mysqlJdbc.query(sql, new BeanPropertyRowMapper(Country.class)));
     }
 

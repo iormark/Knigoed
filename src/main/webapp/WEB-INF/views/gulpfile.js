@@ -22,7 +22,7 @@ var gulp = require('gulp'),
 
 gulp.task('style', function () {
     var files = [
-        'bundles/normalize.css',
+        //'bundles/normalize.css',
         'bundles/common.css',
         'bundles/button.css',
         'bundles/**/*.css',
@@ -40,6 +40,7 @@ gulp.task('style', function () {
 gulp.task('script', function () {
     var files = [
         'libjs/**',
+        'bundles/common.js',
         'bundles/**/*.js',
         '!bundles/add/add.js',
         'blocks/**/*.js'

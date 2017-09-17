@@ -26,6 +26,13 @@
     font-size: 13px;
 }
 
+.btn_blue:hover {
+    background-color: #4c8eff;
+
+}
+.btn_blue:active {
+    background-color: #367bf2;
+}
 
 .btn_green {
     font-weight: bold;

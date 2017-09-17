@@ -2,7 +2,7 @@ package info.knigoed.dao;
 
 import info.knigoed.config.WebConfig;
 import info.knigoed.service.SearchService;
-import info.knigoed.util.SearchSphinxParam;
+import info.knigoed.util.SearchParam;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +30,7 @@ public class SearchServiceTest {
 
     @Test
     public void testARunSearch() {
-        SearchSphinxParam param = new SearchSphinxParam("а", "", 1, 0);
+        SearchParam param = new SearchParam("а", "", null, 1, 0);
         assertTrue(searchService.runSearch(param));
     }
 

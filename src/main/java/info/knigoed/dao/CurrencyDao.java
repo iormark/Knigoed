@@ -23,7 +23,7 @@ public class CurrencyDao {
 
     @PostConstruct
     private void initCurrency() {
-        String sql = "SELECT * FROM Currency LIMIT 10";
+        String sql = "SELECT * FROM Currency";
         rewriteCurrencies(mysqlJdbc.query(sql, new BeanPropertyRowMapper(Currency.class)));
     }
 

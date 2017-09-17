@@ -1,5 +1,7 @@
 package info.knigoed.config;
 
+import info.knigoed.isbn.ISBNCheck;
+import info.knigoed.isbn.PrefixRanges;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -11,7 +13,7 @@ import java.util.Properties;
 
 @PropertySource("classpath:config.properties")
 @Configuration
-public class PropertiesConfig implements ServletContextAware {
+public class OtherConfig implements ServletContextAware {
     private ServletContext context;
 
     @Override
@@ -19,6 +21,15 @@ public class PropertiesConfig implements ServletContextAware {
         this.context = context;
     }
 
+    @Bean
+    public PrefixRanges prefixRanges() throws Exception {
+        return new PrefixRanges();
+    }
+
+    @Bean
+    public ISBNCheck isbnCheck() throws Exception {
+        return new ISBNCheck(prefixRanges());
+    }
 
     @Bean
     public PropertySourcesPlaceholderConfigurer placeHolderConfigurer() {
@@ -35,5 +46,6 @@ public class PropertiesConfig implements ServletContextAware {
 
         return pspc;
     }
+
 
 }

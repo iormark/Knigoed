@@ -1,14 +1,11 @@
 package info.knigoed.service;
 
-import info.knigoed.dao.CountryDao;
 import info.knigoed.config.RequestContext;
-import info.knigoed.dao.SearchDao;
-import info.knigoed.dao.SearchSphinxDao;
+import info.knigoed.dao.*;
 import info.knigoed.pojo.Book;
 import info.knigoed.pojo.Price;
 import info.knigoed.pojo.Shop;
-import info.knigoed.util.SearchSphinxParam;
-import org.apache.commons.lang3.StringUtils;
+import info.knigoed.util.SearchParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,31 +22,37 @@ public class SearchService {
     private static final Logger LOG = LoggerFactory.getLogger(SearchService.class);
 
     private final RequestContext requestContext;
-    private final CountryDao countryConfig;
+    private final CountryDao countryDao;
     private final SearchDao searchDao;
+    private final BookDao bookDao;
+    private final PriceDao priceDao;
     private final SearchSphinxDao searchSphinxDao;
-
-    private String message = "";
+    private final PriceService priceService;
 
     @Autowired
-    public SearchService(RequestContext requestContext, CountryDao countryConfig, SearchDao searchDao, SearchSphinxDao searchSphinxDao) {
+    public SearchService(RequestContext requestContext, CountryDao countryDao, SearchDao searchDao, BookDao bookDao, PriceDao priceDao, SearchSphinxDao searchSphinxDao, PriceService priceService) {
         this.requestContext = requestContext;
-        this.countryConfig = countryConfig;
+        this.countryDao = countryDao;
         this.searchDao = searchDao;
+        this.bookDao = bookDao;
+        this.priceDao = priceDao;
         this.searchSphinxDao = searchSphinxDao;
+        this.priceService = priceService;
     }
 
-    public boolean runSearch(SearchSphinxParam param) {
+    public boolean runSearch(SearchParam param) {
         try {
             if (!param.isValid())
                 throw new SQLException("Search query is not valid");
 
-            if (countryConfig.getCountries().containsKey(requestContext.getCountry()))
-                searchSphinxDao.filterCountry(countryConfig.getCountries().get(requestContext.getCountry()).getCountryId());
+            if (countryDao.getCountries().containsKey(requestContext.getCountryCode()))
+                searchSphinxDao.filterCountry(countryDao.getCountries().get(requestContext.getCountryCode()).getCountryId());
             else
                 LOG.error("Country Not Found");
 
+            searchSphinxDao.filterType(param.getType());
             searchSphinxDao.filterShop(param.getShopId());
+            searchSphinxDao.filterYear(param.getYear());
 
             searchSphinxDao.runSearch(param.getKey(), 0, 10);
 
@@ -63,13 +66,14 @@ public class SearchService {
     /*======== Book ========*/
 
     public List<Book> getBooks() throws SQLException, IOException {
-        if (StringUtils.isEmpty(searchSphinxDao.getBooksId()))
+        if (searchSphinxDao.getBooksId().isEmpty())
             return new ArrayList<>();
 
-        HashMap<Integer, TreeSet<Price>> prices = groupPrices(searchDao.getPrices(searchSphinxDao.getBooksId()));
+        HashMap<Integer, TreeSet<Price>> prices = priceService.groupPrices(priceDao.getPrices(searchSphinxDao.getBooksId(),
+            requestContext.getCountryCode()));
 
         return rewriteBooks(
-            searchDao.getBooks(searchSphinxDao.getBooksId()), prices,
+            bookDao.getBooks(searchSphinxDao.getBooksId()), prices,
             searchSphinxDao.getYears());
     }
 
@@ -83,42 +87,13 @@ public class SearchService {
         return list;
     }
 
-    /*======== Price ========*/
-
-    private HashMap<Integer, TreeSet<Price>> groupPrices(List<Price> prices) throws IOException {
-        HashMap<Integer, TreeSet<Price>> map = new HashMap<>();
-        for (Price price : prices) {
-            price.setAvailable("true".equals(price.getAvailable()) ? "В наличии" : "На заказ");
-
-            TreeSet<Price> treeSet;
-            if (!map.containsKey(price.getBookId())) {
-                treeSet = new TreeSet<>(new PricesSortAsc());
-                treeSet.add(price);
-                map.put(price.getBookId(), treeSet);
-            } else {
-                treeSet = map.get(price.getBookId());
-                treeSet.add(price);
-                map.put(price.getBookId(), treeSet);
-            }
-        }
-        LOG.debug("groupPrices: {}", map);
-        return map;
-    }
-
-    public class PricesSortAsc implements Comparator<Price> {
-        @Override
-        public int compare(Price o1, Price o2) {
-            return Double.compare(o1.getPrice(), o2.getPrice());
-        }
-    }
-
     /*======== Shop ========*/
 
     public List<Shop> getShops() throws SQLException, IOException {
         if (searchSphinxDao.getShopsId().isEmpty())
             return new ArrayList<>();
 
-        List<Shop> shops = searchDao.getShops(searchSphinxDao.getShopsId(), requestContext.getCountry());
+        List<Shop> shops = searchDao.getShops(searchSphinxDao.getShopsId(), requestContext.getCountryCode());
         LOG.debug("shops: {}", shops);
         return shops;
     }

@@ -6,7 +6,7 @@
 </head>
 <body>
 <#include "/blocks/head/head.ftl">
-<div id="page-content">
+<div class="page-content" id="page-content">
 <#include "/bundles/${bundle}/${bundle}.ftl">
 </div>
 </body>

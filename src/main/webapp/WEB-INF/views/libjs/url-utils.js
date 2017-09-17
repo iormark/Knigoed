@@ -1,5 +1,4 @@
 'use strict';
-
 var UrlUtils = {
     get: function (variable) {
         var query = window.location.search.substring(1);
@@ -12,23 +11,37 @@ var UrlUtils = {
         }
         return (false);
     },
-    set: function (key, value) {
-        var key = encodeURIComponent(key);
-        var value = encodeURIComponent(value);
+    set: function (path, keyValue, saveHistory) {
         var query = document.location.search.substr(1).split('&');
+        query = query.filter(function (value) {
+            return value !== '';
+        });
 
-        var i = query.length;
         var x;
-        while (i--) {
+        for(var i = 0; i < query.length; i++) {
             x = query[i].split('=');
-            if (x[0] == key) {
-                x[1] = value;
+            if (keyValue.hasOwnProperty(x[0])) {
+                x[1] = encodeURIComponent(keyValue[x[0]]);
                 query[i] = x.join('=');
                 break;
             }
         }
-        if (i < 0)
-            query[query.length] = [key, value].join('=');
-        history.replaceState(null, null, '/search?' + query.join('&'));
+
+        if (!query.length) {
+            var arr = [];
+            for (var key in keyValue)
+                arr.push(key + '=' + encodeURIComponent(keyValue[key]));
+            $.merge(query, arr);
+        }
+
+        var url = path + '?' + query.join('&');
+        if (saveHistory) {
+            history.pushState({reload: true}, null, null);
+            history.pushState({reload: true}, null, url);
+        }
+        else
+            history.replaceState({reload: true}, null, url);
     }
 };
+
+// window.onpopstate = function() {console.log(event.state);}; history.pushState({url: "http://www.knigoed.dev/book/6104"}, '');

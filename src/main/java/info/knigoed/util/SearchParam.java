@@ -4,10 +4,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SearchSphinxParam {
-    private static final Logger LOG = LoggerFactory.getLogger(SearchSphinxParam.class);
+public class SearchParam {
+    private static final Logger LOG = LoggerFactory.getLogger(SearchParam.class);
     private String key;
-    private int shopId = 0;
+
+    private Type type = Type.all;
+
+    public enum Type {
+        all, book, ebook, audiobook
+    }
+
+    private Integer year;
+    private Integer shopId = 0;
 
 		/*search.filterAvailable(available);
         search.setQuorum(quorum);
@@ -16,17 +24,18 @@ public class SearchSphinxParam {
     /**
      * @param key      - query
      * @param keywords - old query params
-     * @param shop     - shop
+     * @param shopId   - shop
      * @param year     - year
      */
-    public SearchSphinxParam(String key, String keywords, Integer shop, Integer year) {
+    public SearchParam(String key, String keywords, Type type, Integer shopId, Integer year) {
         if (StringUtils.isEmpty(key) && !StringUtils.isEmpty(keywords))
             key = keywords;
 
-        LOG.info("{}, shopId:{}", key, shop);
+        LOG.info("{}, shopId:{}", key, shopId);
         this.key = queryClear(key);
-        if (shop != null)
-            shopId = shop;
+        this.type = type;
+        this.shopId = shopId;
+        this.year = year;
     }
 
     private String queryClear(String key) {
@@ -48,7 +57,16 @@ public class SearchSphinxParam {
         return key;
     }
 
+    public String getType() {
+        return type.name();
+    }
+
     public int getShopId() {
-        return shopId;
+        return shopId != null ? shopId : 0;
+    }
+
+    public int getYear() {
+        // TODO: In 3017 there will be a bug
+        return year != null && year > 0 && year < 3017 ? year : 0;
     }
 }

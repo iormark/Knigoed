@@ -1,6 +1,5 @@
 package info.knigoed.dao;
 
-import info.knigoed.pojo.Book;
 import info.knigoed.pojo.Price;
 import info.knigoed.pojo.Shop;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,27 +18,6 @@ public class SearchDao {
     @Autowired
     @Qualifier("mysqlJdbc")
     private JdbcTemplate mysqlJdbc;
-
-    public List<Book> getBooks(StringBuilder booksId) throws SQLException {
-
-        String sql = "SELECT b.bookId, b.author, b.title, b.publisher, b.series, b.isbn, b.image,  f.description " +
-            "FROM Book b, BookInfo f WHERE b.bookId = f.bookId "
-            + "AND b.bookId IN(" + booksId + ") "
-            + "ORDER BY FIELD(b.bookId, " + booksId + ");";
-
-        return mysqlJdbc.query(sql, new BeanPropertyRowMapper(Book.class));
-    }
-
-    public List<Price> getPrices(StringBuilder booksId) throws SQLException {
-
-        String sql = "SELECT " +
-            "p.priceId, p.bookId, p.price, p.url, p.currencyCode, p.year, p.available, p.downloadable, " +
-            "s.name, s.domain, s.setting FROM BookPrice p, Shop s " +
-            "WHERE p.shopId = s.shopId AND p.bookId IN(" + booksId + ")";
-
-        return mysqlJdbc.query(sql, new BeanPropertyRowMapper(Price.class));
-    }
-
 
     public List<Shop> getShops(LinkedHashMap<Integer, Integer> shopsId, String countryCode)
         throws SQLException {

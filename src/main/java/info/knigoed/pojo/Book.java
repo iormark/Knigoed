@@ -2,7 +2,9 @@ package info.knigoed.pojo;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.TreeSet;
 
 public class Book {
@@ -13,7 +15,6 @@ public class Book {
     public String publisher;
     public String series;
     public String isbn;
-    public String isbnReadable;
     public String pageExtent;
     public String binding;
     public Integer age;
@@ -23,8 +24,7 @@ public class Book {
     public String description;
     public String years;
 
-    // ==
-    public String ageValue;
+
     public TreeSet<Price> prices;
 
     public int getBookId() {
@@ -91,28 +91,12 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public String getIsbnReadable() {
-        return isbnReadable;
-    }
-
-    public void setIsbnReadable(String isbnReadable) {
-        this.isbnReadable = isbnReadable;
-    }
-
     public Integer getAge() {
         return age;
     }
 
     public void setAge(Integer age) {
         this.age = age;
-    }
-
-    public String getAgeValue() {
-        return ageValue;
-    }
-
-    public void setAgeValue(String ageValue) {
-        this.ageValue = ageValue;
     }
 
     public String getImage() {
@@ -162,6 +146,58 @@ public class Book {
     public void setPrices(TreeSet<Price> prices) {
         this.prices = prices;
     }
+
+    //
+    public String ageValue;
+    private Isbn isbnObject = new Isbn();
+
+    public String getAgeValue() {
+        return ageValue;
+    }
+
+    public void setAgeValue(String ageValue) {
+        this.ageValue = ageValue;
+    }
+
+
+    public class Isbn {
+        private boolean empty = true;
+        private String quotes;
+        private ArrayList<HashMap<String, String>> readable;
+
+        public boolean isEmpty() {
+            return empty;
+        }
+
+        public void setEmpty(boolean empty) {
+            this.empty = empty;
+        }
+
+        public String getQuotes() {
+            return quotes;
+        }
+
+        public void setQuotes(String quotes) {
+            this.quotes = quotes;
+        }
+
+        public ArrayList<HashMap<String, String>> getReadable() {
+            return readable;
+        }
+
+        public void setReadable(ArrayList<HashMap<String, String>> readable) {
+            this.readable = readable;
+        }
+    }
+
+    public void setIsbnObject(Isbn isbnObject) {
+        this.isbnObject = isbnObject;
+    }
+
+    public Isbn getIsbnObject() {
+        return isbnObject;
+    }
+
 
     @Override
     public String toString() {

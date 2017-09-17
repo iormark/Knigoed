@@ -4,25 +4,41 @@ var Signin = {
     signin: function (e) {
         e.preventDefault();
         var form = $(this);
-        var btn = form.find('.signin-form__btn');
-        var message = form.find('.message');
+        var btn = form.find('.signin__btn');
+        var message = $('.message');
+        message.removeClass('message_error');
+        form.find('.field-message').hide();
         btn.prop('disabled', true);
         var request = $.ajax({
-            type: 'post',
+            type: 'POST',
             url: form.attr("action"),
-            data: form.find('input').serialize(),
+            data: form.serialize(),
             dataType: 'json'
         });
 
         request.done(function (response) {
-            if (typeof response.error !== 'undefined') {
-                message.text(response.error);
-            } else if(typeof response.redirect !== 'undefined')
-                window.location.replace(response.redirect);
+            if (typeof response.message !== 'undefined') {
+                message.addClass('message_error').find('.message__content').text(response.message.message);
+                btn.prop('disabled', false);
+            }
+
+            if (typeof response.fieldErrors !== 'undefined') {
+                var fieldErrors = response.fieldErrors;
+                for (var i in fieldErrors) {
+                    var field = form.find('#field-message-' + fieldErrors[i].field);
+                    field.text(fieldErrors[i].message);
+                    field.show();
+                }
+            }
+
+
+            //else
+            //    window.location.replace('/shop-list');
+            btn.prop('disabled', false);
         });
 
         request.fail(function () {
-            message.text('Не предвиденная ошибка, простите.');
+            message.addClass('message_error').find('.message__content').text('Unknown auth error');
             btn.prop('disabled', false);
         });
     }

@@ -4,6 +4,7 @@ import info.knigoed.config.RequestContext;
 import info.knigoed.dao.BookDao;
 import info.knigoed.dao.CountryDao;
 import info.knigoed.dao.CurrencyDao;
+import info.knigoed.dao.PriceDao;
 import info.knigoed.pojo.Price;
 import info.knigoed.pojo.Shop;
 import info.knigoed.util.Jackson;
@@ -16,9 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class PriceService {
@@ -26,50 +25,94 @@ public class PriceService {
     private static final Logger LOG = LoggerFactory.getLogger(PriceService.class);
     private final RequestContext requestContext;
     private final BookDao bookDao;
+    private final PriceDao priceDao;
     private final CountryDao countryDao;
     private final CurrencyDao currencyDao;
+    private final PriceCurrency priceCurrency;
 
     @Autowired
-    public PriceService(RequestContext requestContext, BookDao bookDao, CountryDao countryDao, CurrencyDao currencyDao) {
+    public PriceService(RequestContext requestContext, BookDao bookDao, PriceDao priceDao, CountryDao countryDao, CurrencyDao currencyDao) {
         this.requestContext = requestContext;
         this.bookDao = bookDao;
+        this.priceDao = priceDao;
         this.countryDao = countryDao;
         this.currencyDao = currencyDao;
+        priceCurrency = new PriceCurrency(countryDao.getCountries(), currencyDao.getCurrencies());
     }
 
-
+    /**
+     * Rewrite prices for one book
+     *
+     * @return list price one book
+     * @throws IOException
+     */
     public List<Price> getPrices(int bookId) throws IOException {
-        LOG.debug("getPrices: bookId {}, country {}", bookId, requestContext.getCountry());
-        return rewritePrices(bookDao.readPrices(bookId, requestContext.getCountry(), "ASC", 100));
+        LOG.debug("getPrices: bookId {}, country {}", bookId, requestContext.getCountryCode());
+        priceCurrency.setUserCountryCode(requestContext.getCountryCode());
+        List<Price> list = new ArrayList<>();
+        for (Price price : priceDao.getPrices(bookId, requestContext.getCountryCode(), "ASC", 100)) {
+            try {
+                list.add(rewritePrice(price));
+            } catch (Exception e) {
+                LOG.error("", e);
+            }
+        }
+        return list;
     }
 
-    private List<Price> rewritePrices(List<Price> prices) throws IOException {
-        PriceCurrency priceCurrency = new PriceCurrency(countryDao.getCountries(), currencyDao.getCurrencies());
-        priceCurrency.setUserCountryCode("UA");
-
-        List<Price> list = new ArrayList<>();
+    /**
+     * Price grouping for each book
+     *
+     * @param prices list price
+     * @return prices grouped by bookId
+     * @throws IOException
+     */
+    public HashMap<Integer, TreeSet<Price>> groupPrices(List<Price> prices) throws IOException {
+        priceCurrency.setUserCountryCode(requestContext.getCountryCode());
+        HashMap<Integer, TreeSet<Price>> map = new HashMap<>();
         for (Price price : prices) {
+            price = rewritePrice(price);
 
-            price.setAvailable("true".equals(price.getAvailable()) ? "В наличии" : "На заказ");
-
-            price.setName(StringUtils.isEmpty(price.getName()) ? price.getDomain() : price.getName());
-
-            Map shopCurrencies = Jackson.mapper().readValue(price.getSetting(), Shop.Settings.class).getCurrencies();
-
-            double curr = priceCurrency.getCurrency(
-                price.getPrice(),
-                price.getCurrencyCode(),
-                price.getCountryCode(),
-                shopCurrencies
-            );
-
-            price.setPrice(curr);
-            price.setPriceFormat(PriceUtils.priceFormat(curr, requestContext.getCountry()) + " "
-                + priceCurrency.getCurrencySuffix());
-            list.add(price);
+            TreeSet<Price> treeSet;
+            if (!map.containsKey(price.getBookId())) {
+                treeSet = new TreeSet<>(new PricesSortAsc());
+                treeSet.add(price);
+                map.put(price.getBookId(), treeSet);
+            } else {
+                treeSet = map.get(price.getBookId());
+                treeSet.add(price);
+                map.put(price.getBookId(), treeSet);
+            }
         }
-        LOG.debug("rewritePrices: {}", list);
-        return list;
+        LOG.debug("groupPrices: {}", map);
+        return map;
+    }
+
+    private Price rewritePrice(Price price) throws IOException {
+        price.setAvailable("true".equals(price.getAvailable()) ? "В наличии" : "На заказ");
+
+        price.setName(StringUtils.isEmpty(price.getName()) ? price.getDomain() : price.getName());
+
+        Map shopCurrencies = Jackson.mapper().readValue(price.getSetting(), Shop.Settings.class).getCurrencies();
+
+        double curr = priceCurrency.getCurrency(
+            price.getPrice(),
+            price.getCurrencyCode(),
+            price.getCountryCode(),
+            shopCurrencies
+        );
+
+        price.setPrice(curr);
+        price.setPriceFormat(PriceUtils.priceFormat(curr, requestContext.getCountryCode()) + " "
+            + priceCurrency.getCurrencySuffix());
+        return price;
+    }
+
+    public class PricesSortAsc implements Comparator<Price> {
+        @Override
+        public int compare(Price o1, Price o2) {
+            return Double.compare(o1.getPrice(), o2.getPrice());
+        }
     }
 
 }

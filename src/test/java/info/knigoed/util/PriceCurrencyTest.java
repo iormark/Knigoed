@@ -1,7 +1,7 @@
 package info.knigoed.util;
 
 import info.knigoed.config.DataSourceConfig;
-import info.knigoed.config.PropertiesConfig;
+import info.knigoed.config.OtherConfig;
 import info.knigoed.config.RequestContext;
 import info.knigoed.config.WebConfig;
 import info.knigoed.dao.CountryDao;
@@ -22,7 +22,7 @@ import java.util.Map;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebConfig.class, PropertiesConfig.class, DataSourceConfig.class, RequestContext.class})
+@ContextConfiguration(classes = {WebConfig.class, OtherConfig.class, DataSourceConfig.class, RequestContext.class})
 @WebAppConfiguration
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PriceCurrencyTest {

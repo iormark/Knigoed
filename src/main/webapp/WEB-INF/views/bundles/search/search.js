@@ -1,12 +1,21 @@
-'use strict';
-
 var Search = {
+    searchFormValidate: function () {
+        var key = $('.head-search__key');
+        key.focus();
+        key = $.trim(key.val());
+        return typeof key !== 'undefined' && key !== '';
+    },
     searchForm: function () {
-        var form = $('.header-search');
+        var saveHistory = window.location.pathname.indexOf('/search') === -1;
+        var form = $('.head-search');
+        UrlUtils.set('/search', {
+            type: $('#head-search-type').val(),
+            key: $('.head-search__key').val()
+        }, saveHistory);
 
         var request = $.ajax({
             type: 'POST',
-            url: form.attr('action'),
+            url: '/search',
             data: form.serialize(),
             dataType: 'html'
         });
@@ -22,6 +31,6 @@ var Search = {
 };
 
 $(function () {
-    //$('.header-search__key').keyup(Search.keyUp);
-    $('.header-search__key').bindWithDelay('keyup', Search.searchForm, 600);
+    //$('.head-search__key').keyup(Search.keyUp);
+    $('.head-search__key').bindWithDelay('keyup', Search.searchForm, 600);
 });

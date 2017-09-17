@@ -1,22 +1,25 @@
 package info.knigoed.config;
 
-import info.knigoed.manager.UserManager;
 import info.knigoed.pojo.User;
+import info.knigoed.service.UserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class Authorizing extends AuthorizingRealm {
+    private static final Logger LOG = LoggerFactory.getLogger(Authorizing.class);
 
     @Autowired
-    private UserManager userManager;
+    private UserService userService;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        System.out.println("AuthorizationInfo");
+        LOG.info("Authorization {}", principals);
         User user = (User) principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.addRole(user.getRole().name());
@@ -25,15 +28,12 @@ public class Authorizing extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        System.out.println("AuthenticationInfo");
-
+        LOG.info("Authentication {}", token);
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
-        User user = userManager.getByUsername(usernamePasswordToken.getUsername());
-        if (user != null && user.getPassword().equals(new String(usernamePasswordToken.getPassword()))) {
+        User user = userService.getByEmail(usernamePasswordToken.getUsername());
+        if (user != null && user.getPassword().equals(new String(usernamePasswordToken.getPassword())))
             return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
-        } else {
-            throw new AuthenticationException("Invalid username/password combination!");
-        }
-
+        else
+            throw new AuthenticationException("Invalid username or password");
     }
 }

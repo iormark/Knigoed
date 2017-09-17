@@ -1,6 +1,19 @@
 <div class="srch">
-
     <div class="srch__stats">Найденно книг ${total} (${time?string["0.##"]} сек.)</div>
+<!--
+<#if shops?has_content>
+    <ul class="srch-option-shop">
+        <li class="srch-option__shop"><a href="">Все</a></li>
+        <#list shops as shop>
+            <li class="srch-option__shop" data-shop="${shop.shopId}"><a href="">${shop.name}</a></li>
+        </#list>
+    </ul>
+<#else>
+    <div class="srch-message">
+        Нет магазинов.
+    </div>
+</#if>
+-->
 
     <section class="srch-result">
 
@@ -18,7 +31,8 @@
             <div class="srch__info">
                 <h3 class="srch-title">
                     <a class="srch-title__name" href="/book/${res.bookId}" target="_blank">${(res.title)!""}</a><br>
-                    <span class="srch-title__author">${(res.author)!""} <#if (res.publisher)??>(${res.publisher})</#if></span>
+                    <span class="srch-title__author">${(res.author)!""} <#if (res.publisher)??>(${res.publisher}
+                        )</#if></span>
                 </h3>
 
                 <div class="srch__desc">

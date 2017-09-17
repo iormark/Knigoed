@@ -3,8 +3,12 @@ html, body {
 }
 
 body {
-    font-size: 17px;
+    font-size: 16px;
     font-family: Arial, Tahoma, sans-serif;
+}
+
+.page-content {
+    height: 78%;
 }
 
 .clear {
@@ -18,3 +22,40 @@ body {
     border-radius: 5px;
     outline: 0 none;
 }*/
+
+/* Message */
+.message {
+    display: none;
+    border-radius: 4px;
+    border: 1px #ddd solid;
+    background-color: #fff;
+
+}
+
+.message_error {
+    display: block;
+    border-color: #c40000;
+}
+
+.message__inner {
+    background-color: #fff;
+    box-shadow: 0 0 0 4px #fcf4f4 inset;
+    border-radius: 4px;
+    position: relative;
+    padding: 14px 18px;
+}
+
+.message__h4 {
+    color: #c40000;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.255;
+    margin: 0;
+}
+
+/* Field Message */
+
+.field-message {
+    display: none;
+    color: #f41224;
+}

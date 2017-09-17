@@ -79,7 +79,7 @@ public class UrlGenerator {
         return map;
     }
 
-    public String getURL() {
+    public String getURL(boolean isEncode) {
         String uri = "";
         if (null != address) {
             uri = address.getProtocol() + "://"
@@ -90,7 +90,7 @@ public class UrlGenerator {
         StringBuilder sb = new StringBuilder(uri);
         List<String> listOfParams = new ArrayList<>();
         for (String param : map.keySet()) {
-            listOfParams.add(param + "=" + encodeString(map.get(param)));
+            listOfParams.add(param + "=" + (isEncode ? encodeString(map.get(param)) : map.get(param)));
         }
 
         if (!listOfParams.isEmpty()) {

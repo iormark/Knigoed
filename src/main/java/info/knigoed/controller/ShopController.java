@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.io.IOException;
 
 @Controller
-public class ShopController {
-
+public class ShopController extends TemplateController {
     @Autowired
     private Invoice invoice;
     @Autowired
@@ -21,7 +20,10 @@ public class ShopController {
 
     @RequestMapping(value = "/shop-list", method = RequestMethod.GET)
     public String shopList(Model model) throws IOException {
-        model.addAttribute("shopList", shopService.shopAllByUserId());
+        model.addAttribute("title", "");
+
+
+
         model.addAttribute("bundle", "shop-list");
         return "bundles/template-1";
     }

@@ -6,6 +6,8 @@ public class Country {
     private String countryCode;
     private String currencyCode;
     private String currencySuffix;
+    //
+    private boolean selected;
 
     public int getCountryId() {
         return countryId;
@@ -45,5 +47,13 @@ public class Country {
 
     public void setCurrencySuffix(String currencySuffix) {
         this.currencySuffix = currencySuffix;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

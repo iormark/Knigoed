@@ -8,7 +8,7 @@ for table in "book" "book_info" "book_price" "book_isbn_id" "book_shop_id"
 do
     echo "Create "$table
     mysqldump -u $user -p$password \
-    --where "1=1 ORDER BY bookId ASC LIMIT 5000" $base $table > $base"_"$table".sql"
+    --where "1=1 ORDER BY bookId ASC LIMIT 30000" $base $table > $base"_"$table".sql"
 done
 
 echo "Create country"

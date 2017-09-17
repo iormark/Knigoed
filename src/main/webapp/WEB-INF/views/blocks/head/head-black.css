@@ -1,0 +1,158 @@
+.head {
+    margin: 0;
+    background-color: #141518;
+    padding: 10px 10px 0 10px;
+}
+
+/* Logo */
+.head-logo {
+    float: left;
+    padding: 0 10px;
+    font-size: 36px;
+    text-decoration: none;
+    color: #fff;
+    font-family: serif;
+}
+
+/* Country */
+.head__country {
+    float: left;
+    padding: 6px 10px;
+}
+
+.head__select {
+    cursor: pointer;
+    font-size: 16px;
+
+    width: 128px;
+    height: 32px;
+    padding: 5px 10px;
+
+    border-radius: 2px;
+    background-repeat: no-repeat;
+    background-position: 94% 50%;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: 0 none;
+
+    background-color: #484846;
+    border: 1px solid #484846;
+    color: #ffffff;
+}
+
+.head__select.RU {
+    background-image: url(/images/flags-ru.png);
+}
+
+.head__select.BY {
+    background-image: url(/images/flags-by.png);
+}
+
+.head__select.UA {
+    background-image: url(/images/flags-ua.png);
+}
+
+.head__select.KZ {
+    background-image: url(/images/flags-kz.png);
+}
+
+/* Search */
+.head-search {
+    display: block;
+    max-width: 1010px;
+    margin: 0 auto;
+}
+
+.head-search__right {
+    float: right;
+}
+
+.head-search__left {
+    overflow: hidden;
+}
+
+.head-search__submit {
+    height: 44px;
+    cursor: pointer;
+    min-width: 76px;
+    max-width: 86px;
+    padding: 0;
+    text-align: center;
+    border: 0;
+    border-radius: 0 2px 2px 0;
+    outline: 0 none;
+}
+
+.head-search__key {
+    width: 100%;
+    font-size: 16px;
+    border-radius: 2px 0 0 2px;
+    padding: 12px 14px;
+    box-sizing: border-box;
+    outline: 0 none;
+    background-color: #484846;
+    border: 1px solid #484846;
+    color: #ccc;
+}
+
+.head-search__year {
+    width: 70px;
+    font-size: 16px;
+    padding: 12px 14px;
+    box-sizing: border-box;
+    outline: 0 none;
+    background-color: #484846;
+    border: 1px solid #484846;
+    border-left: 0;
+    border-right: 0;
+    color: #ccc;
+}
+
+/* Search Option */
+
+.head-search__option {
+    padding: 10px 0;
+}
+
+.head-search__type {
+    color: #fff;
+    padding: 2px 3px;
+    text-decoration: none;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+.head-search__type > span {
+    border-bottom: 1px dashed rgba(255, 255, 255, .3);
+}
+
+.head-search__type > span:hover {
+    color: #f41224;
+    /*#8d0325*/
+    border-color: rgba(244,18,36,.3);
+}
+
+.head-search__type.current {
+    background-color: #fff;
+    color: #000;
+}
+
+.head-search__type.current > span {
+    border-bottom: 0;
+}
+.head-search__type.current > span:hover {
+    color:inherit;
+    border-bottom: 0;
+}
+
+/* Right Panel */
+
+.head-panel {
+    float: right;
+    color: #ffffff;
+    margin: 0 20px;
+    height: 100%;
+    line-height: 43px;
+}

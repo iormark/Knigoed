@@ -1,14 +1,14 @@
 package info.knigoed.dao;
 
+import com.google.common.base.Joiner;
 import info.knigoed.pojo.Book;
-import info.knigoed.pojo.Price;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -18,7 +18,7 @@ public class BookDao {
     @Qualifier("mysqlJdbc")
     private JdbcTemplate mysqlJdbc;
 
-    public Book readBook(int bookId) {
+    public Book getBook(int bookId) {
         String sql = "SELECT b.bookId, b.title, b.author, b.publisher, b.series, b.pageExtent, b.binding, "
             + "b.isbn, b.age, b.image, b.edit, b.lastModified, bi.description "
             + "FROM Book b, BookInfo bi WHERE b.bookId = bi.bookId AND b.bookId = ?  AND b.edit != 'delete'";
@@ -26,20 +26,24 @@ public class BookDao {
         return (Book) mysqlJdbc.queryForObject(sql, new Object[]{bookId}, new BeanPropertyRowMapper(Book.class));
     }
 
-    public List<Price> readPrices(int bookId, String countryCode, String sortPrice, int limit) throws IOException {
 
-        String sql = "SELECT s.shopId, "
-            + "s.name, s.domain, s.setting, s.countryCode, p.priceId, p.bookId, "
-            + "p.url, p.price, p.currencyCode, p.available, p.downloadable, p.year "
-            + "FROM BookPrice p, Shop s "
-            + "LEFT JOIN ShopTarget target ON s.shopId=target.shopId "
-            + "WHERE s.status IN('pause', 'process') "
-            + "AND (target.countryCode = ? OR target.countryCode IS NULL) "
-            + "AND p.shopId = s.shopId "
-            + "AND p.bookId = ? LIMIT ?";
+    public List<Book> getBooks(List booksId) throws SQLException {
+        String join = Joiner.on(",").join(booksId);
 
-        return mysqlJdbc.query(sql, new Object[]{countryCode, bookId, limit}, new BeanPropertyRowMapper(Price.class));
+        String sql = "SELECT b.bookId, b.author, b.title, b.publisher, b.series, b.isbn, b.image,  f.description " +
+            "FROM Book b, BookInfo f WHERE b.bookId = f.bookId "
+            + "AND b.bookId IN(" + join + ") "
+            + "ORDER BY FIELD(b.bookId, " + join + ");";
+
+        return mysqlJdbc.query(sql, new BeanPropertyRowMapper(Book.class));
     }
 
+
+    public List<Integer> getBookRelative(String isbn, int ignoreBookId) throws SQLException {
+
+        String sql = "SELECT bookId FROM BookIsbnId WHERE bookId != ? AND isbn IN(" + isbn + ")";
+
+        return mysqlJdbc.queryForList(sql, new Object[]{ignoreBookId}, Integer.class);
+    }
 
 }

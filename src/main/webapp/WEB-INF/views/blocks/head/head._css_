@@ -1,5 +1,7 @@
 .header {
-    margin: 20px 10px 0 10px;
+    margin: 0;
+    background-color: #141518;
+    padding: 10px 10px 0 10px;
 }
 
 /* Logo */
@@ -80,22 +82,23 @@
     border: 1px solid #ccc;
     border-right: 0;
     border-bottom-color: #b2b2b2;
-    border-radius: 3px 0 0 3px;
-    padding: 14px 14px;
     box-sizing: border-box;
     outline: 0 none;
+    background-color: #484846;
+    border-color: #484846;
+    color: #ccc;
 }
 .header-search__year {
-    background: #fff;
     width: 70px;
     font-size: 16px;
-    border: 1px solid #ccc;
     border-left: 0;
     border-right: 0;
-    border-bottom-color: #b2b2b2;
     padding: 14px 14px;
     box-sizing: border-box;
     outline: 0 none;
+    background-color: #484846;
+    border-color: #484846;
+    color: #ccc;
 }
 
 .header-panel {
