@@ -1,0 +1,23 @@
+.shop-list {
+    max-width: 1010px;
+    margin: 40px auto;
+    padding: 0 10px;
+}
+
+.shop-list__cell_name {
+    width: 24%;
+}
+
+.shop-list__cell_status {
+    width: 13%;
+}
+
+.shop-list__cell_click {
+    width: 15%;
+    text-align: center;
+}
+
+.shop-list__cell_balance {
+    width: 15%;
+    text-align: center;
+}

@@ -256,7 +256,7 @@
                     </execution>
                 </executions>
             </plugin>-->
-            <!--<plugin>
+            <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.4.6.v20170531</version>
@@ -264,13 +264,19 @@
                     <reload>automatic</reload>
                     <scanIntervalSeconds>1</scanIntervalSeconds>
                     <httpConnector>
-                        <host>knigoed.dev</host>
+                        <host>www.knigoed.dev</host>
                         <port>8080</port>
                     </httpConnector>
+                    <contextHandlers>
+                        <contextHandler implementation="org.eclipse.jetty.server.handler.ContextHandler">
+                            <resourceBase>src/main/webapp</resourceBase>
+                            <handler implementation="org.eclipse.jetty.server.handler.ResourceHandler" />
+                        </contextHandler>
+                    </contextHandlers>
                     <stopKey/>
                     <stopPort/>
                 </configuration>
-            </plugin>-->
+            </plugin>
 
             <plugin>
                 <groupId>org.flywaydb</groupId>

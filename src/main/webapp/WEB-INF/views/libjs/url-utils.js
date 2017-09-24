@@ -1,3 +1,9 @@
+/**
+ * URL Utils
+ * https://www.knigoed.info
+ * Version 1.2 Copyright (C) Mark Iordan
+ */
+
 'use strict';
 var UrlUtils = {
     get: function (variable) {
@@ -18,21 +24,19 @@ var UrlUtils = {
         });
 
         var x;
-        for(var i = 0; i < query.length; i++) {
+        for (var i = 0; i < query.length; i++) {
             x = query[i].split('=');
             if (keyValue.hasOwnProperty(x[0])) {
                 x[1] = encodeURIComponent(keyValue[x[0]]);
                 query[i] = x.join('=');
-                break;
+                delete keyValue[x[0]];
             }
         }
 
-        if (!query.length) {
-            var arr = [];
-            for (var key in keyValue)
-                arr.push(key + '=' + encodeURIComponent(keyValue[key]));
-            $.merge(query, arr);
-        }
+        var arr = [];
+        for (var key in keyValue)
+            arr.push(key + '=' + encodeURIComponent(keyValue[key]));
+        $.merge(query, arr);
 
         var url = path + '?' + query.join('&');
         if (saveHistory) {

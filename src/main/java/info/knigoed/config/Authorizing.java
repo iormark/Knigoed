@@ -10,6 +10,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 public class Authorizing extends AuthorizingRealm {
     private static final Logger LOG = LoggerFactory.getLogger(Authorizing.class);
@@ -27,11 +28,20 @@ public class Authorizing extends AuthorizingRealm {
     }
 
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
+        throws AuthenticationException, EmptyResultDataAccessException {
+
         LOG.info("Authentication {}", token);
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
-        User user = userService.getByEmail(usernamePasswordToken.getUsername());
-        if (user != null && user.getPassword().equals(new String(usernamePasswordToken.getPassword())))
+        User user;
+
+        try {
+            user = userService.getByEmail(usernamePasswordToken.getUsername());
+        } catch (EmptyResultDataAccessException e) {
+            throw new AuthenticationException("Invalid username or password");
+        }
+
+        if (user.getPassword().equals(new String(usernamePasswordToken.getPassword())))
             return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
         else
             throw new AuthenticationException("Invalid username or password");

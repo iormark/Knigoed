@@ -3,6 +3,7 @@ package info.knigoed.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import java.util.Date;
 import java.util.HashMap;
 
 public class Shop {
@@ -16,14 +17,40 @@ public class Shop {
         blocked, pause, process, shortage, untried, not_paid
     }
 
+    private Date lastModified;
     private float balance;
+    private String setting;
+    private Setting settings;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    static public class Settings {
+    static public class Setting {
 
         //@JsonIgnore
-        //HashMap feed, yml_check, report;
-        HashMap currencies;
+        HashMap feed, yml_check, report, currencies;
+
+        public HashMap getFeed() {
+            return feed;
+        }
+
+        public void setFeed(HashMap feed) {
+            this.feed = feed;
+        }
+
+        public HashMap getYml_check() {
+            return yml_check;
+        }
+
+        public void setYml_check(HashMap yml_check) {
+            this.yml_check = yml_check;
+        }
+
+        public HashMap getReport() {
+            return report;
+        }
+
+        public void setReport(HashMap report) {
+            this.report = report;
+        }
 
         public HashMap getCurrencies() {
             return currencies;
@@ -35,10 +62,10 @@ public class Shop {
     }
 
     // More
-
-    private int clicksToday;
-    private int clicksYesterday;
-    private int clicksWeek;
+    private int count;
+    private int clickToday;
+    private int clickYesterday;
+    private int clickWeek;
 
     public int getShopId() {
         return shopId;
@@ -72,6 +99,14 @@ public class Shop {
         this.status = status;
     }
 
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
     public float getBalance() {
         return balance;
     }
@@ -80,28 +115,52 @@ public class Shop {
         this.balance = balance;
     }
 
-    public int getClicksToday() {
-        return clicksToday;
+    public String getSetting() {
+        return setting;
     }
 
-    public void setClicksToday(int clicksToday) {
-        this.clicksToday = clicksToday;
+    public void setSetting(String setting) {
+        this.setting = setting;
     }
 
-    public int getClicksYesterday() {
-        return clicksYesterday;
+    public Setting getSettings() {
+        return settings;
     }
 
-    public void setClicksYesterday(int clicksYesterday) {
-        this.clicksYesterday = clicksYesterday;
+    public void setSettings(Setting settings) {
+        this.settings = settings;
     }
 
-    public int getClicksWeek() {
-        return clicksWeek;
+    public int getCount() {
+        return count;
     }
 
-    public void setClicksWeek(int clicksWeek) {
-        this.clicksWeek = clicksWeek;
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getClickToday() {
+        return clickToday;
+    }
+
+    public void setClickToday(int clicksToday) {
+        this.clickToday = clicksToday;
+    }
+
+    public int getClickYesterday() {
+        return clickYesterday;
+    }
+
+    public void setClickYesterday(int clicksYesterday) {
+        this.clickYesterday = clicksYesterday;
+    }
+
+    public int getClickWeek() {
+        return clickWeek;
+    }
+
+    public void setClickWeek(int clicksWeek) {
+        this.clickWeek = clicksWeek;
     }
 
     @Override

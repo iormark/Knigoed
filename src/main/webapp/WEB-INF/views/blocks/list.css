@@ -1,0 +1,28 @@
+.list__head {
+    font-weight: bold;
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.list__row {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.list__row:hover {
+    background: #f8f8f8;
+}
+
+.list__row:first-child {
+    border-top: 1px solid #eaeaea;
+}
+
+.list__cell {
+    display: inline-block;
+    width: 10%;
+    padding: 10px 0;
+}

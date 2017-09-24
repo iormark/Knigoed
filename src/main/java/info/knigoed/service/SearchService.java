@@ -93,9 +93,16 @@ public class SearchService {
         if (searchSphinxDao.getShopsId().isEmpty())
             return new ArrayList<>();
 
-        List<Shop> shops = searchDao.getShops(searchSphinxDao.getShopsId(), requestContext.getCountryCode());
+        LinkedHashMap<Integer, Integer> shopsId = searchSphinxDao.getShopsId();
+        List<Shop> shops = searchDao.getShops(shopsId, requestContext.getCountryCode());
+        List<Shop> list = new ArrayList<>();
+        for (Shop shop : shops) {
+            if(shopsId.containsKey(shop.getShopId()))
+                shop.setCount(shopsId.get(shop.getShopId()));
+            list.add(shop);
+        }
         LOG.debug("shops: {}", shops);
-        return shops;
+        return list;
     }
 
     /*======== Get ========*/

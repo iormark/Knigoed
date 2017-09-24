@@ -1,9 +1,9 @@
 <title>${title!""}</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/builds/style.css?4.1.0">
 <script src="https://yastatic.net/jquery/3.1.1/jquery.min.js"></script>
 <script src="/builds/script.js?4.1.0"></script>
-<link rel="stylesheet" href="/builds/style.css?4.1.0">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
 <#if (meta.keywords)??><meta name="keywords" content="${meta.keywords}"></#if>

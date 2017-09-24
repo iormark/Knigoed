@@ -1,12 +1,10 @@
 package info.knigoed.controller;
 
-import info.knigoed.service.CountryService;
 import info.knigoed.service.SearchService;
 import info.knigoed.util.SearchParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,25 +13,16 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 @Controller
-public class SearchController {
+public class SearchController extends TemplateController {
 
-    @Autowired
-    private CountryService countryService;
     @Autowired
     private SearchService searchService;
-
-    @ModelAttribute
-    public void addAttributes(Model model) {
-        model.addAttribute("countryCode", countryService.getCountryCode());
-        model.addAttribute("countries", countryService.getCountries());
-    }
-
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String search(
         @RequestParam String key,
         @RequestParam(required = false) String keywords,
-        @RequestParam(required = false) SearchParam.Type type,
+        @RequestParam(required = false, defaultValue = "all") SearchParam.Type type,
         @RequestParam(required = false) Integer shop,
         @RequestParam(required = false) Integer year,
         Model model) throws IOException, SQLException, ClassNotFoundException {

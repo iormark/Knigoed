@@ -1,6 +1,5 @@
 package info.knigoed.service;
 
-import info.knigoed.config.RequestContext;
 import info.knigoed.dao.UserDao;
 import info.knigoed.dto.Message;
 import info.knigoed.pojo.SignInForm;
@@ -20,25 +19,31 @@ public class UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
-    @Autowired
-    private RequestContext requestContext;
+    //@Autowired
+    //private RequestContext requestContext;
     @Autowired
     private UserDao userDao;
 
-    public User getByEmail(String username) {
-        return userDao.getByEmail(username);
+    public User getByEmail(String email) {
+        return userDao.getByEmail(email);
     }
 
-    public Message authenticationUser(SignInForm user) {
-        Message message = new Message();
+    public User getByUserId(int userId) {
+        return userDao.getByUserId(userId);
+    }
+
+    public String authUser(SignInForm user) {
+        String error = null;
         Subject currentUser = SecurityUtils.getSubject();
 
         if (!currentUser.isAuthenticated()) {
-            Md5Hash password = new Md5Hash(user.getPassword().toLowerCase());
+            Md5Hash password = new Md5Hash(user.getPassword());
             UsernamePasswordToken token = new UsernamePasswordToken(user.getEmail(), password.toHex());
             token.setRememberMe(true);
+
             try {
                 currentUser.login(token);
+
                 /*} catch (UnknownAccountException e) {
                 result.put("error", "Мы не можем найти учетную запись с этим адресом электронной почты");
             } catch (IncorrectCredentialsException e) {
@@ -46,34 +51,36 @@ public class UserService {
             } catch (LockedAccountException e) {
                 result.put("error", "Заблокирован");*/
             } catch (AuthenticationException e) {
-                message.setError("Мы не можем найти учетную запись с этим адресом электронной почты или паролем");
+                error = "Мы не можем найти учетную запись с этим адресом электронной почты или паролем";
             }
         }
-
-        return message;
+        return error;
     }
 
 
-    public Message setUser(String name, String email, String password) {
-        Message message = new Message();
+    public String setUser(User user) {
+        String error = null;
         Subject currentUser = SecurityUtils.getSubject();
+        LOG.debug("setUser isRemembered {}", currentUser.isRemembered());
 
         if (!currentUser.isAuthenticated()) {
-            User user = userDao.getByEmail(email);
+            User byUser = userDao.getByEmail(user.getEmail());
 
-            if (user == null) {
-                Md5Hash emailHash = new Md5Hash(email.trim().toLowerCase());
-                userDao.setUser(name, email, password, emailHash.toHex());
-                UsernamePasswordToken token = new UsernamePasswordToken(email, password);
+            if (byUser == null) {
+                Md5Hash emailHash = new Md5Hash(user.getEmail() + user.getPassword());
+                // Create User
+                userDao.setUser(user.getName(), user.getEmail(), user.getPassword(), emailHash.toHex());
+
+                UsernamePasswordToken token = new UsernamePasswordToken(user.getEmail(), user.getPassword());
                 token.setRememberMe(true);
                 try {
                     currentUser.login(token);
                 } catch (AuthenticationException e) {
-                    message.setError(Message.MSG_ERROR_DEFAULT);
+                    error = Message.MSG_ERROR_DEFAULT;
                 }
             } else
-                message.setError("Учетная запись с этим адресом электронной почты уже существует");
+                error = "Учетная запись с этим адресом электронной почты уже существует";
         }
-        return message;
+        return error;
     }
 }

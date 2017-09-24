@@ -1,59 +1,40 @@
 package info.knigoed.dto;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public class Message implements Serializable {
     public static final String MSG_ERROR_DEFAULT = "Произошла ошибка. Мы уже знаем о проблеме. Простите.";
-    private Message.Type type = Type.error;
+    private String error;
+    private String success;
+    private Map<String, String> fieldErrors;
+    private Map<String, String> fieldSuccess;
 
-    public enum Type {
-        success, error
+    public void setError(String error) {
+        this.error = error;
+    }
+    public String getError() {
+        return error;
     }
 
-    private String field = null;
-    private String message = null;
-
-
-    public Message() {}
-
-    public Message(Type type, String field ,String message) {
-        this.type = type;
-        this.field = field;
-        this.message = message;
+    public void setSuccess(String success) {
+        this.success = success;
+    }
+    public String getSuccess() {
+        return success;
     }
 
-
-    public Type getType() {
-        return type;
+    public void addFieldError(String field, String message) {
+        fieldErrors.put(field, message);
+    }
+    public Map<String, String> getFieldErrors() {
+        return fieldErrors;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void addFieldSuccess(Map<String, String> fieldSuccess) {
+        this.fieldSuccess = fieldSuccess;
     }
-
-    public String getField() {
-        return field;
-    }
-
-    public void setField(String field) {
-        this.field = field;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setSuccess(String message) {
-        this.type = Type.success;
-        this.message = message;
-    }
-
-    public void setError(String message) {
-        this.type = Type.error;
-        this.message = message;
+    public Map<String, String> getFieldSuccess() {
+        return fieldSuccess;
     }
 }

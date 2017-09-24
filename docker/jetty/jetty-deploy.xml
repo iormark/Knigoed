@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_3.dtd">
 <Configure id="Server" class="org.eclipse.jetty.server.Server">
 
@@ -13,8 +13,9 @@
                         <New class="org.eclipse.jetty.deploy.providers.WebAppProvider">
                             <Set name="monitoredDirName"><Property name="jetty.base" default="." />/webapps</Set>
                             <Set name="defaultsDescriptor"><Property name="jetty.home" default="." />/etc/webdefault.xml</Set>
+                            <Set name="tempDir"><Property name="jetty.home" default="target" />/workish</Set>
                             <Set name="scanInterval">1</Set>
-                            <Set name="extractWars">false</Set>
+                            <Set name="extractWars">true</Set>
                         </New>
                     </Arg>
                 </Call>

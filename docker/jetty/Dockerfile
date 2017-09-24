@@ -1,6 +1,8 @@
 # https://hub.docker.com/_/jetty/
-# /usr/local/jetty - etc, bin, lib
-# /var/lib/jetty - lib, webapps
+# JETTY_HOME - /usr/local/jetty - etc, bin, lib
+# JETTY_BASE - /var/lib/jetty - lib, webapps
+
+# cd /var/lib/jetty/webapps/ROOT nano jetty-deploy.xml
 FROM jetty:9.4-jre8
 
 RUN apt-get update && apt-get -y install wget && apt-get -y install nano && apt-get clean

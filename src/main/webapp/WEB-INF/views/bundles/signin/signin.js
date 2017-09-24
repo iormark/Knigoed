@@ -17,23 +17,24 @@ var Signin = {
         });
 
         request.done(function (response) {
-            if (typeof response.message !== 'undefined') {
-                message.addClass('message_error').find('.message__content').text(response.message.message);
+            if (Utils.isEmpty(response)) {
+                window.location.replace('/shop');
+                return;
+            }
+
+            if (typeof response.error !== 'undefined') {
+                message.addClass('message_error').find('.message__content').text(response.error);
                 btn.prop('disabled', false);
             }
 
             if (typeof response.fieldErrors !== 'undefined') {
                 var fieldErrors = response.fieldErrors;
-                for (var i in fieldErrors) {
-                    var field = form.find('#field-message-' + fieldErrors[i].field);
-                    field.text(fieldErrors[i].message);
-                    field.show();
+                for (var field in fieldErrors) {
+                    var fieldInput = form.find('#field-message-' + field);
+                    fieldInput.text(fieldErrors[field]);
+                    fieldInput.show();
                 }
             }
-
-
-            //else
-            //    window.location.replace('/shop-list');
             btn.prop('disabled', false);
         });
 

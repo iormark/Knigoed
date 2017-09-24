@@ -1,0 +1,24 @@
+.table {
+    width: 100%;
+    max-width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.table> thead> tr> th {
+    border-top: 0;
+    vertical-align: bottom;
+    border-bottom: 2px solid #ddd;
+    padding: 8px;
+}
+
+.table> tbody> tr> td {
+    padding: 8px;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+
+
+.table> tbody> tr:hover {
+    background-color: #f8f8f8;
+}

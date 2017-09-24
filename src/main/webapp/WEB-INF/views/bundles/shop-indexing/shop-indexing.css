@@ -1,0 +1,16 @@
+.shop-indexing{
+    max-width: 1010px;
+    margin: 40px auto;
+    padding: 0 10px;
+}
+
+.shop-indexing__message {
+    text-align: left;
+    word-wrap: break-word;
+    max-width: 1010px;
+}
+
+
+.shop-list__link {
+    color: #000;
+}

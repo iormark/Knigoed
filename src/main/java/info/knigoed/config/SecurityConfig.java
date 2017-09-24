@@ -2,8 +2,10 @@ package info.knigoed.config;
 
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.mgt.WebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +26,18 @@ public class SecurityConfig {
     public WebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(customSecurityRealm());
+
+        CookieRememberMeManager rememberMeManager = new CookieRememberMeManager();
+        //rememberMeManager.setCipherKey(new byte[]{'k','n','i','g','o','e','d','d','b','c','d','a','b','b','c','d'});
+
+        SimpleCookie cookie = new SimpleCookie();
+        cookie.setName(CookieRememberMeManager.DEFAULT_REMEMBER_ME_COOKIE_NAME);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(3600 * 24 * 30);
+
+        rememberMeManager.setCookie(cookie);
+
+        securityManager.setRememberMeManager(rememberMeManager);
         return securityManager;
     }
 
@@ -31,8 +45,8 @@ public class SecurityConfig {
     public ShiroFilterFactoryBean shiroFilterBean() {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         Map<String, String> definitionMap = new HashMap<>();
-        definitionMap.put("/shop-list", "authc, roles[admin]");
-        definitionMap.put("/shop/**", "authc, roles[admin]");
+        //definitionMap.put("/shop-list", "authc, roles[admin]");
+        definitionMap.put("/shop/**", "authc");
         //definitionsMap.put("/**", "authc");
         shiroFilter.setFilterChainDefinitionMap(definitionMap);
 

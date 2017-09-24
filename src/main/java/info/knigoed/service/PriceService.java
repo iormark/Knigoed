@@ -71,11 +71,12 @@ public class PriceService {
         priceCurrency.setUserCountryCode(requestContext.getCountryCode());
         HashMap<Integer, TreeSet<Price>> map = new HashMap<>();
         for (Price price : prices) {
+
             price = rewritePrice(price);
 
             TreeSet<Price> treeSet;
             if (!map.containsKey(price.getBookId())) {
-                treeSet = new TreeSet<>(new PricesSortAsc());
+                treeSet = new TreeSet<Price>(new PricesSortAsc());
                 treeSet.add(price);
                 map.put(price.getBookId(), treeSet);
             } else {
@@ -83,8 +84,9 @@ public class PriceService {
                 treeSet.add(price);
                 map.put(price.getBookId(), treeSet);
             }
+
+            LOG.debug("treeSet {}", treeSet);
         }
-        LOG.debug("groupPrices: {}", map);
         return map;
     }
 
@@ -93,7 +95,7 @@ public class PriceService {
 
         price.setName(StringUtils.isEmpty(price.getName()) ? price.getDomain() : price.getName());
 
-        Map shopCurrencies = Jackson.mapper().readValue(price.getSetting(), Shop.Settings.class).getCurrencies();
+        Map shopCurrencies = Jackson.mapper().readValue(price.getSetting(), Shop.Setting.class).getCurrencies();
 
         double curr = priceCurrency.getCurrency(
             price.getPrice(),
@@ -111,7 +113,14 @@ public class PriceService {
     public class PricesSortAsc implements Comparator<Price> {
         @Override
         public int compare(Price o1, Price o2) {
-            return Double.compare(o1.getPrice(), o2.getPrice());
+            if (o2.getPrice() < o1.getPrice()) {
+                return 1;
+            } else if (o2.getPrice() > o1.getPrice()) {
+                return -1;
+            } else if(o1.getUrl().equals(o2.getUrl())) {
+                return 0;
+            }
+            return 1;
         }
     }
 

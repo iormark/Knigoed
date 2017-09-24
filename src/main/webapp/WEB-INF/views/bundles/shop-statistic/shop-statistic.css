@@ -1,0 +1,15 @@
+.shop-statistic {
+    max-width: 1010px;
+    margin: 40px auto;
+    padding: 0 10px;
+}
+
+/* Head Filer */
+.shop-statistic-filter {
+    margin:10px 0 10px;
+}
+
+.shop-statistic-filter__form {
+    float: right;
+    margin-right: 5px
+}

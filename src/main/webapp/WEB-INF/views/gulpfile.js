@@ -22,8 +22,9 @@ var gulp = require('gulp'),
 
 gulp.task('style', function () {
     var files = [
-        //'bundles/normalize.css',
         'bundles/common.css',
+        'blocks/menu/menu.css',
+        'blocks/*.css',
         'bundles/button.css',
         'bundles/**/*.css',
         'blocks/**/*.css'
@@ -42,7 +43,6 @@ gulp.task('script', function () {
         'libjs/**',
         'bundles/common.js',
         'bundles/**/*.js',
-        '!bundles/add/add.js',
         'blocks/**/*.js'
     ];
     gulp.src(files)

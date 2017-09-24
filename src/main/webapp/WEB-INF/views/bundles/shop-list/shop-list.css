@@ -1,0 +1,30 @@
+.shop-list {
+    max-width: 1010px;
+    margin: 40px auto;
+    padding: 0 10px;
+}
+
+.shop-list__name {
+    width: 24%;
+    text-align: left;
+}
+
+.shop-list__status {
+    width: 13%;
+    text-align: left;
+}
+
+.shop-list__click {
+    width: 15%;
+    text-align: center;
+}
+
+.shop-list__balance {
+    width: 15%;
+    text-align: center;
+}
+
+
+.shop-list__link {
+    color: #000;
+}

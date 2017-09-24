@@ -19,12 +19,11 @@ public class User implements Serializable {
     @NotEmpty
     private String name;
     private String hash;
-    private Date lastLogin;
     private Role role = Role.user;
-
     public enum Role {
         user, admin
     }
+    private Date lastLogin;
 
     public int getUserId() {
         return userId;
@@ -66,6 +65,14 @@ public class User implements Serializable {
         this.hash = hash;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public Date getLastLogin() {
         return lastLogin;
     }
@@ -74,13 +81,7 @@ public class User implements Serializable {
         this.lastLogin = lastLogin;
     }
 
-    public Role getRole() {
-        return role;
-    }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     @Override
     public String toString() {

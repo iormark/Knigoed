@@ -1,11 +1,21 @@
 .head {
-    margin: 0;
     background-color: #141518;
-    padding: 10px 10px 0 10px;
+    padding: 10px;
+    height: 72px;
+
+}
+
+.head__wrap {
+    margin: 0 auto;
+    max-width: 1880px;
 }
 
 /* Logo */
 .head-logo {
+    float: left;
+}
+
+.head-logo__image {
     float: left;
     padding: 0 10px;
     font-size: 36px;
@@ -15,12 +25,12 @@
 }
 
 /* Country */
-.head__country {
+.head-logo__country {
     float: left;
     padding: 6px 10px;
 }
 
-.head__select {
+.head-logo__select {
     cursor: pointer;
     font-size: 16px;
 
@@ -42,19 +52,19 @@
     color: #ffffff;
 }
 
-.head__select.RU {
+.head-logo__select.RU {
     background-image: url(/images/flags-ru.png);
 }
 
-.head__select.BY {
+.head-logo__select.BY {
     background-image: url(/images/flags-by.png);
 }
 
-.head__select.UA {
+.head-logo__select.UA {
     background-image: url(/images/flags-ua.png);
 }
 
-.head__select.KZ {
+.head-logo__select.KZ {
     background-image: url(/images/flags-kz.png);
 }
 
@@ -85,6 +95,10 @@
     outline: 0 none;
 }
 
+.head-search__submit:hover {
+    background-color: #eaeaea;
+}
+
 .head-search__key {
     width: 100%;
     font-size: 16px;
@@ -113,7 +127,7 @@
 /* Search Option */
 
 .head-search__option {
-    padding: 10px 0;
+    padding: 10px 0 0;
 }
 
 .head-search__type {
@@ -131,7 +145,7 @@
 .head-search__type > span:hover {
     color: #f41224;
     /*#8d0325*/
-    border-color: rgba(244,18,36,.3);
+    border-color: rgba(244, 18, 36, .3);
 }
 
 .head-search__type.current {
@@ -142,17 +156,41 @@
 .head-search__type.current > span {
     border-bottom: 0;
 }
+
 .head-search__type.current > span:hover {
-    color:inherit;
+    color: inherit;
     border-bottom: 0;
 }
 
-/* Right Panel */
 
+/* Right Panel */
+/* Mix Menu Right Panel */
 .head-panel {
     float: right;
     color: #ffffff;
     margin: 0 20px;
-    height: 100%;
     line-height: 43px;
+    display: inline-block;
+    height: 100%;
 }
+
+.head-panel__menu-btn {
+    line-height: 72px;
+
+    height: 100%;
+    padding: 0 12px;
+
+    cursor: pointer;
+}
+
+.head-panel__menu-btn:hover {
+    background-color: #2f2f2f;
+    border-radius: 2px;
+}
+
+.head-panel__menu-content {
+    top: 80px;
+    min-width: 220px;
+    right: 0;
+}
+

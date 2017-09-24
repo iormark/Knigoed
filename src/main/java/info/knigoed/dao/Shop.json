@@ -1,0 +1,21 @@
+{
+    "feed": {
+        "url": "http://price.mixmarket.biz/uni/getxml.php?mid\u003d1294910053\u0026zid\u003d1294988757\u0026zip\u003d1",
+        "allow_domains": "price.mixmarket.biz"
+    },
+    "report": {
+        "count_warning": 0,
+        "count_books": 171931,
+        "error_type": "SUCCESS",
+        "count_books_isbn": 165565,
+        "message": "",
+        "count_error": 0
+    },
+    "yml_check": {
+        "process": false,
+        "last_check": "2016-07-23 09:07"
+    },
+    "currencies": {
+        "RUR": "1"
+    }
+}

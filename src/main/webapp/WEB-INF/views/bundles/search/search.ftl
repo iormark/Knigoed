@@ -1,19 +1,20 @@
 <div class="srch">
-    <div class="srch__stats">Найденно книг ${total} (${time?string["0.##"]} сек.)</div>
-<!--
-<#if shops?has_content>
-    <ul class="srch-option-shop">
-        <li class="srch-option__shop"><a href="">Все</a></li>
-        <#list shops as shop>
-            <li class="srch-option__shop" data-shop="${shop.shopId}"><a href="">${shop.name}</a></li>
-        </#list>
-    </ul>
-<#else>
-    <div class="srch-message">
-        Нет магазинов.
+    <div class="srch__stats">Найденно книг ${total} (${time?string["0.##"]} сек.)
+
+    <#if shops?has_content>
+        <div class="menu srch__menu">
+            <span class="menu__btn srch__menu-btn">Магазины +</span>
+            <div class="menu__content srch__menu-content">
+                <a href="/search/?key=${key!""}" class="menu__item srch__menu-item">Все</a>
+                <#list shops as shop>
+                    <a href="/search/?key=${key!""}&shop=${shop.shopId}" class="menu__item srch__menu-item" data-shop="${shop.shopId}">
+                    ${shop.name} <i class="x">x</i> <i class="count">${shop.count}</i>
+                    </a>
+                </#list>
+            </div>
+        </div>
+    </#if>
     </div>
-</#if>
--->
 
     <section class="srch-result">
 
@@ -56,6 +57,10 @@
                 по-другому.</p>
         </div>
     </#list>
+
+        <div class="next-page">
+            <a href="/search" id="next-page" class="next-page__btn">Еще книги</a>
+        </div>
 
     </section>
 

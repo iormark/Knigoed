@@ -1,6 +1,5 @@
 package info.knigoed.dao;
 
-import info.knigoed.pojo.Price;
 import info.knigoed.pojo.Shop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,12 +26,12 @@ public class SearchDao {
         docsId.deleteCharAt(0);
         docsId.deleteCharAt(docsId.length() - 1);
 
-        String sql = "SELECT s.shopId, s.name " +
+        String sql = "SELECT s.shopId, s.name, s.domain " +
             "FROM Shop s LEFT JOIN ShopTarget ON s.shopId = ShopTarget.shopId " +
             "WHERE (ShopTarget.countryCode = ? OR ShopTarget.countryCode IS NULL) " +
             "AND status IN('pause','process') AND s.shopId IN(" + docsId + ") " +
             "ORDER BY FIELD(s.shopId, " + docsId + ")";
 
-        return mysqlJdbc.query(sql, new Object[] { countryCode }, new BeanPropertyRowMapper(Price.class));
+        return mysqlJdbc.query(sql, new Object[] { countryCode }, new BeanPropertyRowMapper(Shop.class));
     }
 }

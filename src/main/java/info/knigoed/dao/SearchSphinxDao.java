@@ -107,8 +107,8 @@ public class SearchSphinxDao {
     /**
      * @param year Фильтрация по полю "year"
      */
-    public void filterYear(int year) {
-        if (year > 0) {
+    public void filterYear(Integer year) {
+        if (year != null && year > 0) {
             LOG.debug("filterYear: " + year);
             urlGenerator.setParameter("year", year);
             filters.append(" and year=").append(year);
@@ -151,11 +151,16 @@ public class SearchSphinxDao {
         if (weightFormula == null)
             return false;
 
+        // Books
         String sql = "SELECT id, year" + weightFormula + " FROM Book WHERE" + match + filters
             + " ORDER BY weight DESC LIMIT " + skip + "," + limit + option;
 
         sql += "SHOW META;";
-        sql += "SELECT @groupby AS shop, COUNT(*) AS count, country FROM Book WHERE " + match + " GROUP BY shop ORDER BY count DESC LIMIT 20";
+
+        // Shops
+        sql += "SELECT @groupby AS shop, COUNT(*) AS count, country FROM Book WHERE " + match
+            + " GROUP BY shop ORDER BY count DESC LIMIT 20";
+
         LOG.info(sql);
         sphinxQuery(sql);
         return true;

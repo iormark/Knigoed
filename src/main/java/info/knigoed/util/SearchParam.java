@@ -65,8 +65,8 @@ public class SearchParam {
         return shopId != null ? shopId : 0;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         // TODO: In 3017 there will be a bug
-        return year != null && year > 0 && year < 3017 ? year : 0;
+        return year != null && year > 0 && year < 3017 ? year : null;
     }
 }

@@ -1,8 +1,8 @@
 package info.knigoed.controller;
 
+import info.knigoed.config.RequestContext;
 import info.knigoed.pojo.Book;
 import info.knigoed.service.BookService;
-import info.knigoed.service.CountryService;
 import info.knigoed.service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class BookController {
 
     @Autowired
-    private CountryService countryService;
+    private RequestContext requestContext;
     @Autowired
     private BookService bookService;
     @Autowired
@@ -24,8 +24,8 @@ public class BookController {
 
     @ModelAttribute
     public void addAttributes(Model model) {
-        model.addAttribute("countryCode", countryService.getCountryCode());
-        model.addAttribute("countries", countryService.getCountries());
+        model.addAttribute("countryCode", requestContext.getCountryCode());
+        model.addAttribute("countries", requestContext.getCountries());
     }
 
 

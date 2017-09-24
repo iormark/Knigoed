@@ -1,0 +1,15 @@
+.shop-panel {
+    background-color: antiquewhite;
+    padding: 10px;
+}
+
+.shop-panel__wrap {
+    max-width: 1010px;
+    margin: 0 auto;
+}
+
+.shop-panel__item {
+    margin-right: 10px;
+    color: #000;
+    text-decoration: none;
+}
