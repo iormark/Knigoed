@@ -2,6 +2,7 @@ package info.knigoed.dao;
 
 import info.knigoed.config.WebConfig;
 import info.knigoed.service.SearchService;
+import info.knigoed.util.NextPage;
 import info.knigoed.util.SearchParam;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 import static org.junit.Assert.assertFalse;
@@ -29,9 +31,10 @@ public class SearchServiceTest {
 
 
     @Test
-    public void testARunSearch() {
+    public void testARunSearch() throws URISyntaxException {
         SearchParam param = new SearchParam("а", "", null, 1, 0);
-        assertTrue(searchService.runSearch(param));
+        NextPage nextPage = new NextPage("df", 1, 100);
+        assertTrue(searchService.runSearch(param, nextPage));
     }
 
     @Test

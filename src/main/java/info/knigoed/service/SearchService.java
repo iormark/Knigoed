@@ -5,6 +5,7 @@ import info.knigoed.dao.*;
 import info.knigoed.pojo.Book;
 import info.knigoed.pojo.Price;
 import info.knigoed.pojo.Shop;
+import info.knigoed.util.Pagination;
 import info.knigoed.util.SearchParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,7 @@ public class SearchService {
         this.priceService = priceService;
     }
 
-    public boolean runSearch(SearchParam param) {
+    public boolean runSearch(SearchParam param, Pagination pagination) {
         try {
             if (!param.isValid())
                 throw new SQLException("Search query is not valid");
@@ -54,7 +55,7 @@ public class SearchService {
             searchSphinxDao.filterShop(param.getShopId());
             searchSphinxDao.filterYear(param.getYear());
 
-            searchSphinxDao.runSearch(param.getKey(), 0, 10);
+            searchSphinxDao.runSearch(param.getKey(), pagination.getOffset(), pagination.getLimit());
 
         } catch (SQLException | EmptyResultDataAccessException e) {
             LOG.debug("Query: {}", param.getKey(), e);

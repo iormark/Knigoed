@@ -1,0 +1,25 @@
+.next-page {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 100px;
+}
+.next-page__btn {
+    font-size: 16px;
+    padding: .8em 2.4em;
+    cursor: pointer;
+    text-decoration: none;
+    color: #000;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    outline: 0;
+    background: #fff;
+}
+
+.next-page__btn:active {
+    background: #f0f0f0;
+}
+
+.next-page__btn:hover {
+    text-decoration: none;
+    border-color: #cbcbcb;
+}

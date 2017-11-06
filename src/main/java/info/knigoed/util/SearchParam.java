@@ -58,7 +58,10 @@ public class SearchParam {
     }
 
     public String getType() {
-        return type.name();
+        if (type == null)
+            return "all";
+        else
+            return type.name();
     }
 
     public int getShopId() {

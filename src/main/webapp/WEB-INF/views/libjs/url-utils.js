@@ -15,7 +15,7 @@ var UrlUtils = {
                 return pair[1];
             }
         }
-        return (false);
+        return null;
     },
     set: function (path, keyValue, saveHistory) {
         var query = document.location.search.substr(1).split('&');
@@ -34,11 +34,14 @@ var UrlUtils = {
         }
 
         var arr = [];
-        for (var key in keyValue)
-            arr.push(key + '=' + encodeURIComponent(keyValue[key]));
+        for (var key in keyValue) {
+            if (!Utils.isEmpty(keyValue[key]))
+                arr.push(key + '=' + encodeURIComponent(keyValue[key]));
+        }
         $.merge(query, arr);
 
         var url = path + '?' + query.join('&');
+        console.log('UrlUtils: ' + url);
         if (saveHistory) {
             history.pushState({reload: true}, null, null);
             history.pushState({reload: true}, null, url);

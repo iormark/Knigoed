@@ -1,13 +1,10 @@
 .price {
-    display: table;
     width: 100%;
+    border-collapse: collapse;
 }
 
 .price__row {
-    width: 100%;
-    height: auto;
     position: relative;
-    border-bottom: 1px solid #eaeaea;
 }
 
 .price__row:hover {
@@ -19,9 +16,8 @@
 }
 
 .price__cell {
-    display: inline-block;
-    width: 10%;
-    padding: 10px 0;
+    border-bottom: 1px solid #eaeaea;
+    width: 15%;
 }
 
 .price__cell_shop-name {
@@ -30,23 +26,18 @@
 }
 
 .price__cell_available {
-    width: 15%;
 }
 
 .price__cell_price {
     font-weight: bold;
-    width: 15%;
     text-align: right;
 }
 
 .price__cell_year {
-    width: 15%;
     text-align: center;
 }
 
 .price__cell_buy {
-    width: 120px;
     text-align: right;
-    float: right;
-    padding: 6px 0;
+    padding: 5px 0;
 }

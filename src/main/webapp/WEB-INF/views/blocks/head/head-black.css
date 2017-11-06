@@ -1,7 +1,7 @@
 .head {
     background-color: #141518;
     padding: 10px;
-    height: 72px;
+    height: 68px;
 
 }
 
@@ -84,7 +84,7 @@
 }
 
 .head-search__submit {
-    height: 44px;
+    height: 40px;
     cursor: pointer;
     min-width: 76px;
     max-width: 86px;
@@ -103,7 +103,7 @@
     width: 100%;
     font-size: 16px;
     border-radius: 2px 0 0 2px;
-    padding: 12px 14px;
+    padding: 10px 14px;
     box-sizing: border-box;
     outline: 0 none;
     background-color: #484846;
@@ -114,7 +114,7 @@
 .head-search__year {
     width: 70px;
     font-size: 16px;
-    padding: 12px 14px;
+    padding: 10px 14px;
     box-sizing: border-box;
     outline: 0 none;
     background-color: #484846;
